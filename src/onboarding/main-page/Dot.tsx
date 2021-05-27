@@ -22,7 +22,7 @@ const Dot: React.FC<DotProps> = ({animated, index}) => {
       backgroundColor: interpolateColor(
         animated.value,
         [width * (index - 1), width * index, width * (index + 1)],
-        ['grey', '#00E6B3', 'grey'],
+        ['#142664', '#00E6B3', '#142664'],
         'RGB',
       ),
       width: interpolate(

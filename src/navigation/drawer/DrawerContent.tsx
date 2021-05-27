@@ -1,26 +1,13 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import {Caption, Drawer, Subheading, useTheme} from 'react-native-paper';
 import {DrawerContentScrollView} from '@react-navigation/drawer';
 import {StyleSheet, View} from 'react-native';
 import FastImage from 'react-native-fast-image';
-import {DrawerNavigationHelpers} from '@react-navigation/drawer/lib/typescript/src/types';
 import Icon from 'react-native-vector-icons/MaterialIcons';
-
-const styles = StyleSheet.create({
-  drawerView: {margin: 0, padding: 0, backgroundColor: '#202329'},
-  drawerContent: {flex: 1},
-  userInfoSection: {
-    paddingTop: 15,
-    paddingLeft: 20,
-    paddingBottom: 15,
-  },
-  avatar: {height: 60, width: 60, resizeMode: 'contain', borderRadius: 40},
-  title: {marginTop: 20, fontWeight: 'bold', color: '#fff'},
-  caption: {fontSize: 14, lineHeight: 14, color: '#949AB2'},
-  row: {marginTop: 20, flexDirection: 'row', alignItems: 'center'},
-  section: {flexDirection: 'row', alignItems: 'center', marginRight: 15},
-  paragraph: {marginRight: 3, fontWeight: 'bold'},
-});
+import useStore from '../../store/Store';
+import UserService from '../../services/User.service';
+import {User} from '../../types/User';
+import {DrawerNavigationHelpers} from '@react-navigation/drawer/lib/typescript/src/types';
 
 interface DrawerContentProps {
   navigation: DrawerNavigationHelpers;
@@ -28,6 +15,14 @@ interface DrawerContentProps {
 
 const DrawerContent: React.FC<DrawerContentProps> = ({navigation}) => {
   const theme = useTheme();
+  const authenticatedUser: User = useStore(state => state.user);
+  const setAuthenticatedUser = useStore(state => state.setAuthenticatedUser);
+
+  useEffect(() => {
+    UserService.getAuthenticatedUser(setAuthenticatedUser, () =>
+      console.log('sos'),
+    );
+  }, []);
 
   return (
     <DrawerContentScrollView style={styles.drawerView}>
@@ -36,15 +31,14 @@ const DrawerContent: React.FC<DrawerContentProps> = ({navigation}) => {
           <View>
             <FastImage
               source={{
-                uri:
-                  'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTqmT07roVH-yMO7TLziGd9-c5qiUga4iXuxg&usqp=CAU',
+                uri: authenticatedUser.profilePicture,
                 cache: FastImage.cacheControl.immutable,
               }}
               style={styles.avatar}
             />
           </View>
-          <Subheading style={styles.title}>Fox Mc cloud</Subheading>
-          <Caption style={styles.caption}>@Fox mccloud</Caption>
+          <Subheading style={styles.title}>{authenticatedUser.nickname}</Subheading>
+          <Caption style={styles.caption}>@{authenticatedUser.username}</Caption>
         </View>
         <Drawer.Section>
           <Drawer.Item
@@ -53,7 +47,7 @@ const DrawerContent: React.FC<DrawerContentProps> = ({navigation}) => {
             )}
             label={'Messages'}
             onPress={() => {
-              navigation.navigate('Home', {screen: 'OnBoarding'});
+              navigation.navigate('Home', {screen: 'Home'});
             }}
           />
           <Drawer.Item
@@ -123,3 +117,19 @@ const DrawerContent: React.FC<DrawerContentProps> = ({navigation}) => {
 };
 
 export default DrawerContent;
+
+const styles = StyleSheet.create({
+  drawerView: {margin: 0, padding: 0, backgroundColor: '#202329'},
+  drawerContent: {flex: 1},
+  userInfoSection: {
+    paddingTop: 15,
+    paddingLeft: 20,
+    paddingBottom: 15,
+  },
+  avatar: {height: 60, width: 60, resizeMode: 'contain', borderRadius: 40},
+  title: {marginTop: 20, fontWeight: 'bold', color: '#fff'},
+  caption: {fontSize: 14, lineHeight: 14, color: '#949AB2'},
+  row: {marginTop: 20, flexDirection: 'row', alignItems: 'center'},
+  section: {flexDirection: 'row', alignItems: 'center', marginRight: 15},
+  paragraph: {marginRight: 3, fontWeight: 'bold'},
+});

@@ -8,15 +8,43 @@ interface SlideProps {
   title: string;
   content: string;
   index: number;
+  last: boolean;
   onPress: () => void;
+  navigation: any;
 }
 
-const Slide: React.FC<SlideProps> = ({title, content, onPress}) => {
+const Slide: React.FC<SlideProps> = ({
+  title,
+  content,
+  onPress,
+  last,
+  navigation,
+}) => {
   return (
     <View style={styles.root}>
       <Text style={styles.title}>{title}</Text>
       <Text style={styles.content}>{content}</Text>
-      <Button onPress={onPress} color={'#142662'} mode={'contained'}>Next</Button>
+      {last ? (
+        <View>
+          <Button
+            style={{marginBottom: 14}}
+            onPress={() => navigation.navigate('Login')}
+            color={'#142662'}
+            mode={'outlined'}>
+            I have an account
+          </Button>
+          <Button
+            onPress={() => navigation.navigate('NewAccount')}
+            color={'#142662'}
+            mode={'contained'}>
+            Create new account
+          </Button>
+        </View>
+      ) : (
+        <Button onPress={onPress} color={'#142662'} mode={'contained'}>
+          Next
+        </Button>
+      )}
     </View>
   );
 };
@@ -35,7 +63,7 @@ const styles = StyleSheet.create({
   title: {
     color: '#00e6b3',
     fontWeight: 'bold',
-    fontSize: 30,
+    fontSize: 28,
     textAlign: 'center',
     paddingBottom: 10,
   },
@@ -45,5 +73,9 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     fontWeight: '600',
     marginBottom: 30,
+  },
+  buttonWrapper: {
+    position: 'absolute',
+    bottom: 0,
   },
 });

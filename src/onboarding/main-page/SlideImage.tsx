@@ -17,11 +17,11 @@ interface OnBoardingImageProps {
 const styles = StyleSheet.create({
   image: {
     width,
-    height: height / 2,
+    height: height * 0.55,
   },
 });
 
-const OnBoardingImage: React.FC<OnBoardingImageProps> = ({
+const SlideImage: React.FC<OnBoardingImageProps> = ({
   route,
   index,
   currentScrollPosition,
@@ -42,4 +42,4 @@ const OnBoardingImage: React.FC<OnBoardingImageProps> = ({
   );
 };
 
-export default OnBoardingImage;
+export default SlideImage;

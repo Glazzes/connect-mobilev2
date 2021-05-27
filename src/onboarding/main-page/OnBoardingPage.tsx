@@ -1,4 +1,5 @@
 import React, {useRef} from 'react';
+import {useNavigation} from '@react-navigation/native';
 import {Dimensions, StyleSheet, View} from 'react-native';
 import Animated, {
   useAnimatedScrollHandler,
@@ -6,13 +7,14 @@ import Animated, {
   useSharedValue,
 } from 'react-native-reanimated';
 import features from './Features';
-import OnBoardingImage from './OnBoardingImage';
+import SlideImage from './SlideImage';
 import Dot from './Dot';
 import Slide from './Slide';
 
 const {width, height} = Dimensions.get('screen');
 
 const OnBoardingPage: React.FC = () => {
+  const navigation = useNavigation();
   const scrollRef = useRef<Animated.ScrollView>(null);
   const scrollValue = useSharedValue<number>(0);
 
@@ -41,7 +43,7 @@ const OnBoardingPage: React.FC = () => {
           horizontal>
           {features.map(({id, image}, index) => (
             <View>
-              <OnBoardingImage
+              <SlideImage
                 key={id}
                 currentScrollPosition={scrollValue}
                 route={image}
@@ -61,20 +63,24 @@ const OnBoardingPage: React.FC = () => {
           {features.map(({id, title, content}, index) => {
             const onPress = () => {
               if (scrollRef.current) {
-                scrollRef.current.scrollTo({
+                scrollRef.current?.scrollTo({
                   x: width * (index + 1),
                   animated: true,
                 });
               }
             };
 
+            const last: boolean = index === features.length - 1;
+
             return (
               <Slide
                 key={id}
+                navigation={navigation}
                 title={title}
                 content={content}
                 index={index}
                 onPress={onPress}
+                last={last}
               />
             );
           })}
@@ -92,7 +98,7 @@ const styles = StyleSheet.create({
   },
   imageList: {
     width,
-    height: height / 2,
+    height: height * 0.55,
   },
   dotSection: {
     flexDirection: 'row',

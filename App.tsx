@@ -1,7 +1,12 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import ApplicationDrawerNavigator from './src/navigation/drawer/DrawerNavigator';
-import {StatusBar} from 'react-native'
+import {StatusBar} from 'react-native';
 import {Provider as PaperProvider, DefaultTheme} from 'react-native-paper';
+
+import {createConnectDatabase} from './src/repositories/Connect.repository';
+import useStore from './src/store/Store';
+import OnBoardingStackNavigator from './src/onboarding/OnBoardingStackNavigator';
+import {NavigationContainer} from "@react-navigation/native";
 
 declare global {
   namespace ReactNativePaper {
@@ -22,12 +27,27 @@ const theme = {
 };
 
 const App: React.FC = () => {
+  const isAuthenticated = useStore(state => state.isAuthenticated);
+
+  useEffect(() => {
+    createConnectDatabase();
+  }, []);
+
   return (
     <PaperProvider theme={theme}>
-      <StatusBar barStyle={'dark-content'} translucent={true} networkActivityIndicatorVisible
+      <StatusBar
+        barStyle={'dark-content'}
+        translucent={true}
+        networkActivityIndicatorVisible
         backgroundColor={'rgba(0,0,0,0.4)'}
       />
-      <ApplicationDrawerNavigator />
+      <NavigationContainer>
+        {isAuthenticated ? (
+            <ApplicationDrawerNavigator />
+        ) : (
+            <OnBoardingStackNavigator />
+        )}
+      </NavigationContainer>
     </PaperProvider>
   );
 };

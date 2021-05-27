@@ -1,10 +1,10 @@
 import React from 'react';
 import {createSharedElementStackNavigator} from 'react-navigation-shared-element';
-import UserTextMessage from '../../chat-messages/text-message/UserTextMessage';
 import FriendTextMessage from '../../chat-messages/text-message/FriendTextMessage';
 import DefaultStackAppbar from './appbars/DefaultStackAppbar';
 import FriendRow from '../../chat-views/FriendRow';
-import OnBoardingPage from '../../onboarding/main-page/OnBoardingPage';
+import OnBoardingStackNavigator from '../../onboarding/OnBoardingStackNavigator';
+import SuccessfulQrScan from '../../authentication/qr/SuccessfulQrScan';
 
 type StackNavigatorRoutes = {
   Home: undefined;
@@ -30,11 +30,14 @@ const ApplicationStackNavigator: React.FC = _ => {
           backgroundColor: 'white',
         },
       }}>
-      <Stack.Screen name={'Home'} component={FriendRow} />
+      <Stack.Screen
+        name={'Home'}
+        component={FriendRow}
+      />
       <Stack.Screen name={'Chat'} component={FriendTextMessage} />
       <Stack.Screen
         name={'OnBoarding'}
-        component={OnBoardingPage}
+        component={OnBoardingStackNavigator}
         options={{
           headerShown: false,
         }}
