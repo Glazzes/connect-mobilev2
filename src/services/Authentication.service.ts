@@ -33,32 +33,20 @@ class AuthenticationService {
     qrCodeScanEvent: QrCodeScanEvent,
     successCallback: () => void,
   ) {
-    console.log(qrCodeLoginRequest);
     const promises: Promise<void>[] = [
-      this.registerQrLoginRequest(qrCodeLoginRequest),
-      this.sendQrScanSSE(browserId, qrCodeScanEvent),
+      axios.post(`${HOST}:${PORT}${QR_REGISTER}`, qrCodeLoginRequest, {
+        withCredentials: true,
+      }),
+      axios.post(
+        `${HOST}:${PORT}${SSE}${browserId}${QR_SCAN}`,
+        qrCodeScanEvent,
+        {withCredentials: true},
+      ),
     ];
 
     Promise.all(promises)
       .then(() => successCallback())
       .catch(() => console.log('not ok'));
-  }
-
-  private registerQrLoginRequest(
-    qrLoginRequest: QrLoginRequest,
-  ): Promise<void> {
-    const url = `${HOST}:${PORT}${QR_REGISTER}`;
-    console.log(url);
-    return axios.post(url, qrLoginRequest, {withCredentials: true});
-  }
-
-  private sendQrScanSSE(
-    browserId: string,
-    qrCodeScanEvent: QrCodeScanEvent,
-  ): Promise<void> {
-    const qrScanUrl = `${HOST}:${PORT}${SSE}${browserId}${QR_SCAN}`;
-    console.log(qrScanUrl);
-    return axios.post(qrScanUrl, qrCodeScanEvent, {withCredentials: true});
   }
 
   sendQrLoginSSE(
@@ -67,7 +55,7 @@ class AuthenticationService {
     errorCallback: () => void,
   ) {
     const qrLogin = `${HOST}:${PORT}${SSE}${browserId}${QR_LOGIN}`;
-    console.log(qrLogin);
+
     axios
       .post(qrLogin, {}, {withCredentials: true})
       .then(() => successfulCallback())

@@ -3,14 +3,9 @@ import {createStackNavigator} from '@react-navigation/stack';
 import QrScanner from './QrScanner';
 import QrLoginAppbar from './QrLoginAppbar';
 import SuccessfulQrScan from './SuccessfulQrScan';
+import {QrStackParamList} from '../../navigation/types/QrStackParamList';
 
-export type QrStackRouteList = {
-  Scanner: undefined;
-  SuccessfulScan: undefined;
-  Success: undefined;
-};
-
-const StackNavigator = createStackNavigator<QrStackRouteList>();
+const StackNavigator = createStackNavigator<QrStackParamList>();
 
 const QrStackNavigator: React.FC = () => {
   return (
@@ -18,7 +13,7 @@ const QrStackNavigator: React.FC = () => {
       initialRouteName={'Scanner'}
       headerMode={'screen'}
       screenOptions={{
-        header: ({navigation}) => <QrLoginAppbar navigation={navigation} />,
+        header: ({navigation}: {navigation: any}) => <QrLoginAppbar navigation={navigation} />,
       }}>
       <StackNavigator.Screen name={'Scanner'} component={QrScanner} />
       <StackNavigator.Screen

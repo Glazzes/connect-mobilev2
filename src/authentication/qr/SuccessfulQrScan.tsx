@@ -1,16 +1,16 @@
 import React from 'react';
 import {Dimensions, Image, StyleSheet, View} from 'react-native';
 import {Button, Text} from 'react-native-paper';
-import {Route} from '@react-navigation/native';
-import {QrAuthenticationRouteList} from '../../types/QrAuthenticationRouteList';
+import {RouteProp} from '@react-navigation/native';
 import {StackNavigationProp} from '@react-navigation/stack/lib/typescript/src/types';
 import AuthenticationService from '../../services/Authentication.service';
+import {QrStackParamList} from '../../navigation/types/QrStackParamList';
 
 const {width, height} = Dimensions.get('screen');
 
 interface SuccessfulQrScanProps {
-  navigation: StackNavigationProp<QrAuthenticationRouteList>;
-  route: Route<'SuccessfulQrScan', QrAuthenticationRouteList>;
+  navigation: StackNavigationProp<QrStackParamList>;
+  route: RouteProp<QrStackParamList, 'SuccessfulScan'>;
 }
 
 const SuccessfulQrScan: React.FC<SuccessfulQrScanProps> = ({
@@ -18,13 +18,11 @@ const SuccessfulQrScan: React.FC<SuccessfulQrScanProps> = ({
   route,
 }) => {
   const authorizeQrLogin = () => {
-    const browserId: string = route.params.id;
+    const browserId: string = route.params.browserId;
     AuthenticationService.sendQrLoginSSE(
       browserId,
       () => {
-        console.log(browserId);
-        console.log('Salio bien');
-        // navigation.navigate('Success', undefined);
+        navigation.navigate('SuccessfulLogin');
       },
       () => console.log('Error while sending qr login'),
     );

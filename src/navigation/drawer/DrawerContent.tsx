@@ -6,14 +6,14 @@ import {
 } from '@react-navigation/drawer';
 import {StyleSheet, View} from 'react-native';
 import FastImage from 'react-native-fast-image';
-import Icon from 'react-native-vector-icons/MaterialIcons';
+import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import useStore from '../../store/Store';
 import UserService from '../../services/User.service';
 import {User} from '../../types/User';
-import {DrawerRoutesList} from './DrawerNavigator';
+import {DrawerParamList} from '../types/DrawerParamList';
 
 interface DrawerContentProps {
-  navigation: DrawerNavigationProp<DrawerRoutesList, 'Home'>;
+  navigation: DrawerNavigationProp<DrawerParamList>;
 }
 
 const DrawerContent: React.FC<DrawerContentProps> = ({navigation}) => {
@@ -50,62 +50,70 @@ const DrawerContent: React.FC<DrawerContentProps> = ({navigation}) => {
         <Drawer.Section>
           <Drawer.Item
             icon={() => (
-              <Icon name={'chat-bubble'} color={theme.colors.icon} size={20} />
+              <Icon name={'chat'} color={theme.colors.icon} size={20} />
             )}
             label={'Messages'}
             onPress={() => {
-              navigation.navigate('Home', {screen: 'Home'});
+              navigation.navigate('Home');
             }}
           />
           <Drawer.Item
             icon={() => (
-              <Icon name={'person'} color={theme.colors.icon} size={20} />
+              <Icon
+                name={'account-group'}
+                color={theme.colors.icon}
+                size={20}
+              />
             )}
             label={'Contacts'}
             onPress={() => {
-              navigation.navigate('Home', {screen: 'Home'});
+              navigation.navigate('Home');
             }}
           />
           <Drawer.Item
             icon={() => (
-              <Icon name={'group-add'} color={theme.colors.icon} size={20} />
+              <Icon
+                name={'account-multiple-plus'}
+                color={theme.colors.icon}
+                size={20}
+              />
             )}
             label={'Find friends'}
             onPress={() => {
-              navigation.navigate('Chat', {screen: 'Chat'});
+              navigation.navigate('Chat');
             }}
           />
         </Drawer.Section>
         <Drawer.Section>
           <Drawer.Item
             icon={() => (
+              <Icon name={'qrcode-scan'} color={theme.colors.icon} size={20} />
+            )}
+            label={'Login with qr code'}
+            onPress={() => {
+              navigation.navigate('QrAuth');
+            }}
+          />
+          <Drawer.Item
+            icon={() => (
               <Icon
-                name={'qr-code-scanner'}
+                name={'cellphone-link'}
                 color={theme.colors.icon}
                 size={20}
               />
             )}
-            label={'Login with qr code'}
-            onPress={() => {
-              navigation.navigate('QrAuth', {screen: 'Scanner'});
-            }}
-          />
-          <Drawer.Item
-            icon={() => (
-              <Icon name={'phonelink'} color={theme.colors.icon} size={20} />
-            )}
             label={'Devices'}
             onPress={() => {
-              navigation.navigate('Home', {screen: 'Home'});
+              navigation.navigate('Home');
             }}
           />
           <Drawer.Item
             icon={() => (
-              <Icon name={'settings'} color={theme.colors.icon} size={20} />
+              <Icon name={'cog'} color={theme.colors.icon} size={20} />
             )}
             label={'Settings'}
             onPress={() => {
-              navigation.navigate('Home', {screen: 'Home'});
+              navigation.navigate('Home');
             }}
           />
           <Drawer.Item
@@ -114,7 +122,7 @@ const DrawerContent: React.FC<DrawerContentProps> = ({navigation}) => {
             )}
             label={'Log out'}
             onPress={() => {
-              navigation.navigate('Chat', {screen: 'Chat'});
+              navigation.navigate('Chat');
             }}
           />
         </Drawer.Section>

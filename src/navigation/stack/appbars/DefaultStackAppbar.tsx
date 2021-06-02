@@ -1,20 +1,20 @@
 import React from 'react';
 import {Appbar} from 'react-native-paper';
-import {Scene} from '@react-navigation/stack/lib/typescript/src/types';
-import {Route} from '@react-navigation/native';
+import {CompositeNavigationProp} from '@react-navigation/native';
+import {StackNavigationProp} from '@react-navigation/stack/lib/typescript/src/types';
+import {ChatStackParamList} from '../../types/ChatStackParamList';
 import {DrawerNavigationProp} from '@react-navigation/drawer';
-import {DrawerRoutesList} from '../../drawer/DrawerNavigator';
+import {DrawerParamList} from '../../types/DrawerParamList';
 
 interface DefaultStackAppbarProps {
-  scene: Scene<Route<string, object | undefined>>;
-  navigation: DrawerNavigationProp<DrawerRoutesList, 'Home'>;
-  previous: Scene<Route<string, object | undefined>> | undefined;
+  navigation: CompositeNavigationProp<
+    StackNavigationProp<ChatStackParamList, 'Home'>,
+    DrawerNavigationProp<DrawerParamList>
+  >;
 }
 
 const DefaultStackAppbar: React.FC<DefaultStackAppbarProps> = ({
-  previous,
   navigation,
-  scene,
 }) => {
   return (
     <Appbar.Header
