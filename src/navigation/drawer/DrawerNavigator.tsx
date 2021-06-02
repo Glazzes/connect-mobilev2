@@ -1,12 +1,15 @@
 import React from 'react';
+import {NavigatorScreenParams} from '@react-navigation/native';
 import {createDrawerNavigator} from '@react-navigation/drawer';
 import DrawerContent from './DrawerContent';
 import ApplicationStackNavigator from '../stack/StackNavigator';
-import QrStackNavigator from '../../authentication/qr/QrStackNavigator';
+import QrStackNavigator, {
+  QrStackRouteList,
+} from '../../authentication/qr/QrStackNavigator';
 
 export type DrawerRoutesList = {
   Home: {screen: string};
-  QrAuth: {screen: string};
+  QrAuth: NavigatorScreenParams<QrStackRouteList>;
 };
 
 const Drawer = createDrawerNavigator<DrawerRoutesList>();

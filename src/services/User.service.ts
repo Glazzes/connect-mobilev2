@@ -3,7 +3,7 @@ import {PORT, ME} from '@env';
 import {User} from '../types/User';
 import UserRepository from '../repositories/User.repository';
 
-const HOST = 'http://192.168.42.152';
+const HOST = 'http://192.168.42.210';
 
 class UserService {
   getAuthenticatedUser(

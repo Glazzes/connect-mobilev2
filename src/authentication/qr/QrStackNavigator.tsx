@@ -4,7 +4,7 @@ import QrScanner from './QrScanner';
 import QrLoginAppbar from './QrLoginAppbar';
 import SuccessfulQrScan from './SuccessfulQrScan';
 
-type QrStackRouteList = {
+export type QrStackRouteList = {
   Scanner: undefined;
   SuccessfulScan: undefined;
   Success: undefined;

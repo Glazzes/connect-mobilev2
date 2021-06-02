@@ -12,7 +12,7 @@ import {QrLoginRequest} from '../types/QrLoginRequest';
 import {QrCodeScanEvent} from '../types/QrCodeScanEvent';
 import {LoginRequest} from '../types/LoginRequest';
 
-const HOST = 'http://192.168.42.152';
+const HOST = 'http://192.168.42.210';
 
 class AuthenticationService {
   performUsernamePasswordLogin(

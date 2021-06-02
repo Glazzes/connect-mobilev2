@@ -1,16 +1,19 @@
 import React, {useEffect} from 'react';
 import {Caption, Drawer, Subheading, useTheme} from 'react-native-paper';
-import {DrawerContentScrollView} from '@react-navigation/drawer';
+import {
+  DrawerContentScrollView,
+  DrawerNavigationProp,
+} from '@react-navigation/drawer';
 import {StyleSheet, View} from 'react-native';
 import FastImage from 'react-native-fast-image';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import useStore from '../../store/Store';
 import UserService from '../../services/User.service';
 import {User} from '../../types/User';
-import {DrawerNavigationHelpers} from '@react-navigation/drawer/lib/typescript/src/types';
+import {DrawerRoutesList} from './DrawerNavigator';
 
 interface DrawerContentProps {
-  navigation: DrawerNavigationHelpers;
+  navigation: DrawerNavigationProp<DrawerRoutesList, 'Home'>;
 }
 
 const DrawerContent: React.FC<DrawerContentProps> = ({navigation}) => {
@@ -37,8 +40,12 @@ const DrawerContent: React.FC<DrawerContentProps> = ({navigation}) => {
               style={styles.avatar}
             />
           </View>
-          <Subheading style={styles.title}>{authenticatedUser.nickname}</Subheading>
-          <Caption style={styles.caption}>@{authenticatedUser.username}</Caption>
+          <Subheading style={styles.title}>
+            {authenticatedUser.nickname}
+          </Subheading>
+          <Caption style={styles.caption}>
+            @{authenticatedUser.username}
+          </Caption>
         </View>
         <Drawer.Section>
           <Drawer.Item

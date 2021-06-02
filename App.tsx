@@ -6,7 +6,7 @@ import {Provider as PaperProvider, DefaultTheme} from 'react-native-paper';
 import {createConnectDatabase} from './src/repositories/Connect.repository';
 import useStore from './src/store/Store';
 import OnBoardingStackNavigator from './src/onboarding/OnBoardingStackNavigator';
-import {NavigationContainer} from "@react-navigation/native";
+import {NavigationContainer} from '@react-navigation/native';
 
 declare global {
   namespace ReactNativePaper {
@@ -43,9 +43,9 @@ const App: React.FC = () => {
       />
       <NavigationContainer>
         {isAuthenticated ? (
-            <ApplicationDrawerNavigator />
+          <ApplicationDrawerNavigator />
         ) : (
-            <OnBoardingStackNavigator />
+          <OnBoardingStackNavigator />
         )}
       </NavigationContainer>
     </PaperProvider>

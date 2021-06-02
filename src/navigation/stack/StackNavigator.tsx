@@ -4,7 +4,6 @@ import FriendTextMessage from '../../chat-messages/text-message/FriendTextMessag
 import DefaultStackAppbar from './appbars/DefaultStackAppbar';
 import FriendRow from '../../chat-views/FriendRow';
 import OnBoardingStackNavigator from '../../onboarding/OnBoardingStackNavigator';
-import SuccessfulQrScan from '../../authentication/qr/SuccessfulQrScan';
 
 type StackNavigatorRoutes = {
   Home: undefined;
