@@ -4,32 +4,7 @@ import FastImage from 'react-native-fast-image';
 import {Autolink} from 'react-native-autolink';
 import {Caption} from 'react-native-paper';
 
-const styles = {
-  rootContainer: {
-    padding: 10,
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'flex-end',
-  },
-  friendAvatar: {height: 40, width: 40, borderRadius: 40},
-  messageContainer: {
-    flexGrow: 1,
-    paddingLeft: 10,
-    paddingRight: 10,
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-  },
-  friendMessage: {
-    backgroundColor: '#EAEAEA',
-    padding: 10,
-    borderTopRightRadius: 5,
-    borderTopLeftRadius: 5,
-    borderBottomRightRadius: 5,
-  },
-};
-
-const FriendTextMessage: React.FC = _ => {
+const FriendTextMessage: React.FC = () => {
   return (
     <View style={styles.rootContainer}>
       <View>
@@ -54,3 +29,28 @@ const FriendTextMessage: React.FC = _ => {
 };
 
 export default React.memo(FriendTextMessage);
+
+const styles = {
+  rootContainer: {
+    padding: 10,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'flex-end',
+  },
+  friendAvatar: {height: 40, width: 40, borderRadius: 40},
+  messageContainer: {
+    flexGrow: 1,
+    paddingLeft: 10,
+    paddingRight: 10,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+  },
+  friendMessage: {
+    backgroundColor: '#EAEAEA',
+    padding: 10,
+    borderTopRightRadius: 5,
+    borderTopLeftRadius: 5,
+    borderBottomRightRadius: 5,
+  },
+};

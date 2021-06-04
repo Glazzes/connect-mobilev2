@@ -1,40 +1,59 @@
 import React from 'react';
-import {StyleSheet, View, Text} from 'react-native';
 import {
-  Avatar,
-  Subheading,
-  Caption,
-  Badge,
-} from 'react-native-paper';
+  StyleSheet,
+  View,
+  Text,
+  TouchableWithoutFeedback,
+} from 'react-native';
+import {Avatar, Subheading, Caption, Badge} from 'react-native-paper';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
+import {StackNavigationProp} from '@react-navigation/stack/lib/typescript/src/types';
+import {ChatStackParamList} from '../navigation/types/ChatStackParamList';
 
-interface FriendRowProps {}
+interface FriendRowProps {
+  navigation: StackNavigationProp<ChatStackParamList, 'Home'>;
+}
 
-const FriendRow: React.FC<FriendRowProps> = () => {
+const FriendRow: React.FC<FriendRowProps> = ({navigation}) => {
   return (
-    <View style={styles.friendRow}>
-      <View style={styles.container}>
-        <Avatar.Image
-          source={{uri: 'https://randomuser.me/api/portraits/women/57.jpg'}}
-          size={50}
-        />
-        <View style={styles.messageInfo}>
-          <View style={styles.userInfo}>
-            <Subheading style={styles.username}>Victoria Secret</Subheading>
-            <View style={styles.timeContainer}>
-              <Icon name={'check-all'} size={20} color={'#3772ff'} />
-              <Caption style={styles.time}> 12:30</Caption>
+    <TouchableWithoutFeedback
+      onPress={() => {
+        navigation.navigate('FriendChat', {
+          friend: {
+            id: 'Some cool id',
+            username: 'Epic glaze',
+            nickname: 'Glaze',
+            profilePicture: 'https://randomuser.me/api/portraits/women/57.jpg',
+          },
+        });
+      }}>
+      <View style={styles.friendRow}>
+        <View style={styles.container}>
+          <Avatar.Image
+            source={{uri: 'https://randomuser.me/api/portraits/women/57.jpg'}}
+            size={50}
+          />
+          <View style={styles.messageInfo}>
+            <View style={styles.userInfo}>
+              <Subheading style={styles.username}>Victoria Secret</Subheading>
+              <View style={styles.timeContainer}>
+                <Icon name={'check-all'} size={20} color={'#37c6ff'} />
+                <Caption style={styles.time}> 12:30</Caption>
+              </View>
             </View>
-          </View>
-          <View style={styles.userInfo}>
-            <Text style={styles.message} ellipsizeMode={'tail'} numberOfLines={1}>
-              Hello there! it's been a long time no see
-            </Text>
-            <Badge style={styles.badge}>4</Badge>
+            <View style={styles.userInfo}>
+              <Text
+                style={styles.message}
+                ellipsizeMode={'tail'}
+                numberOfLines={1}>
+                Hello there! it's been a long time no see
+              </Text>
+              <Badge style={styles.badge}>4</Badge>
+            </View>
           </View>
         </View>
       </View>
-    </View>
+    </TouchableWithoutFeedback>
   );
 };
 
