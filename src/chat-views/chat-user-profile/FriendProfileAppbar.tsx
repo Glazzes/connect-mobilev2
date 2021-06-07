@@ -1,8 +1,10 @@
 import React from 'react';
 import {Appbar} from 'react-native-paper';
-import {StyleSheet} from 'react-native';
+import {Dimensions, StyleSheet, useWindowDimensions} from 'react-native';
 import {StackNavigationProp} from '@react-navigation/stack/lib/typescript/src/types';
 import {ChatStackParamList} from '../../navigation/types/ChatStackParamList';
+
+const {width, height} = Dimensions.get('window')
 
 type FriendProfileAppbarProps = {
   navigation: StackNavigationProp<ChatStackParamList, 'FriendProfile'>;
@@ -14,6 +16,7 @@ const FriendProfileAppbar: React.FC<FriendProfileAppbarProps> = ({
   const goOneBack = () => {
     navigation.goBack();
   };
+  const dimensions = useWindowDimensions();
 
   return (
     <Appbar.Header style={styles.appbar}>

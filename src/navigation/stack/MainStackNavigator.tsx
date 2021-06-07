@@ -1,12 +1,12 @@
 import React from 'react';
 import {createSharedElementStackNavigator} from 'react-navigation-shared-element';
-import FriendTextMessage from '../../chat-messages/text-message/FriendTextMessage';
 import DefaultStackAppbar from './appbars/DefaultStackAppbar';
 import FriendRow from '../../chat-views/FriendRow';
 import {ChatStackParamList} from '../types/ChatStackParamList';
 import ChatRoomAppbar from '../../chat-views/chat-room/ChatroomAppbar';
 import FriendProfile from '../../chat-views/chat-user-profile/FriendProfile';
 import FriendProfileAppbar from '../../chat-views/chat-user-profile/FriendProfileAppbar';
+import ChatRoom from '../../chat-views/chat-room/Chatroom';
 
 const Stack = createSharedElementStackNavigator<ChatStackParamList>();
 
@@ -26,7 +26,7 @@ const MainStackNavigator: React.FC = _ => {
       <Stack.Screen name={'Home'} component={FriendRow} />
       <Stack.Screen
         name={'FriendChat'}
-        component={FriendTextMessage}
+        component={ChatRoom}
         options={{
           header: ({navigation, scene}: {navigation: any; scene: any}) => (
             <ChatRoomAppbar navigation={navigation} scene={scene} />

@@ -3,6 +3,25 @@ import {View} from 'react-native';
 import {Autolink} from 'react-native-autolink';
 import {Caption} from 'react-native-paper';
 
+type UserTextMessageProps = {
+  message: string;
+};
+
+const UserTextMessage: React.FC<UserTextMessageProps> = ({message}) => {
+  return (
+    <View style={styles.container}>
+      <View>
+        <Caption style={styles.messageSentHour}>10:00</Caption>
+      </View>
+      <View style={styles.bubble}>
+        <Autolink text={message} linkStyle={styles.link} style={styles.text} />
+      </View>
+    </View>
+  );
+};
+
+export default React.memo(UserTextMessage);
+
 const styles = {
   container: {
     alignItems: 'center',
@@ -24,24 +43,3 @@ const styles = {
   text: {color: 'white'},
   link: {},
 };
-
-const UserTextMessage: React.FC = () => {
-  return (
-    <View style={styles.container}>
-      <View>
-        <Caption style={styles.messageSentHour}>10:00</Caption>
-      </View>
-      <View style={styles.bubble}>
-        <Autolink
-          text={
-            'Hi there again React native <3 Hi there again React native <3 Hi there again React native <3'
-          }
-          linkStyle={styles.link}
-          style={styles.text}
-        />
-      </View>
-    </View>
-  );
-};
-
-export default UserTextMessage;
