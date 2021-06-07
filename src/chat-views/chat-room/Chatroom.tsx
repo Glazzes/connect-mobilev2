@@ -1,29 +1,51 @@
 import React, {useEffect, useRef, useState} from 'react';
-import {View} from 'react-native';
+import {View, ViewToken} from 'react-native';
 import {FlatList, StyleSheet} from 'react-native';
-import Animated from 'react-native-reanimated';
-import axios from 'axios';
+import Animated, {useAnimatedScrollHandler} from 'react-native-reanimated';
 import UserTextMessage from '../../chat-messages/text-message/UserTextMessage';
+import {Post} from '../../types/Post';
+import axios from 'axios';
 
 const AnimatedFlatList = Animated.createAnimatedComponent(FlatList);
 
-const ChatRoom: React.FC = () => {
-  const [blogs, setBlogs] = useState<string[]>([]);
+const VIEW_ABILITY_CONFIG = {
+  minimumViewTime: 300,
+  itemVisiblePercentThreshold: 45,
+  waitForInteraction: false,
+};
 
-  const renderItem = useRef(({item}: {item: string}, index: number) => (
-    <UserTextMessage message={item} key={index} />
-  )).current;
+type ChatroomProps = {
+  posts: Post[];
+};
 
-  const keyExtractor = blog => {
-    return blog.id;
-  };
+function renderItem({item}: {item: Post}) {
+  return <UserTextMessage message={item.title} key={item.id} />;
+}
+
+function keyExtractor(item: Post) {
+  return item.title;
+}
+
+const ChatRoom: React.FC<ChatroomProps> = ({posts}) => {
+  const [messages, setMessages] = useState<Post[]>([]);
+
+  const onViewAbleItemsChange = useRef(
+    ({changed}: {changed: Array<ViewToken>}) => {
+      console.log(changed);
+    },
+  ).current;
+
+  const animatedScrollHandler = useAnimatedScrollHandler({
+    onScroll: event => {
+      console.log(event.contentOffset.y);
+    },
+  });
 
   useEffect(() => {
     axios
       .get('http://jsonplaceholder.typicode.com/posts')
-      .then(response => {
-        const mappedBlogs = response.data.map(blog => blog.title);
-        setBlogs(mappedBlogs);
+      .then(({data}: {data: Post[]}) => {
+        setMessages(data);
       })
       .catch(_ => console.log('sex'));
   }, []);
@@ -31,9 +53,16 @@ const ChatRoom: React.FC = () => {
   return (
     <View style={styles.rootContainer}>
       <AnimatedFlatList
-        data={blogs}
+        data={messages}
+        // @ts-ignore
         renderItem={renderItem}
+        // @ts-ignore
         keyExtractor={keyExtractor}
+        viewabilityConfig={VIEW_ABILITY_CONFIG}
+        onViewableItemsChanged={onViewAbleItemsChange}
+        showsVerticalScrollIndicator={false}
+        removeClippedSubviews={true}
+        onScroll={animatedScrollHandler}
       />
     </View>
   );
