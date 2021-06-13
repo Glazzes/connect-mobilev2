@@ -1,6 +1,8 @@
 import React from 'react';
 import {Dimensions, StyleSheet, View} from 'react-native';
 import {Button, Text} from 'react-native-paper';
+import {StackNavigationProp} from '@react-navigation/stack/lib/typescript/src/types';
+import {OnBoardingStackParamList} from '../../navigation/types/OnBoardingStackParamList';
 
 const {width} = Dimensions.get('screen');
 
@@ -10,7 +12,7 @@ interface SlideProps {
   index: number;
   last: boolean;
   onPress: () => void;
-  navigation: any;
+  navigation: StackNavigationProp<OnBoardingStackParamList, 'MainPage'>;
 }
 
 const Slide: React.FC<SlideProps> = ({
@@ -33,10 +35,7 @@ const Slide: React.FC<SlideProps> = ({
             mode={'outlined'}>
             I have an account
           </Button>
-          <Button
-            onPress={() => navigation.navigate('NewAccount')}
-            color={'#142662'}
-            mode={'contained'}>
+          <Button onPress={() => {}} color={'#142662'} mode={'contained'}>
             Create new account
           </Button>
         </View>

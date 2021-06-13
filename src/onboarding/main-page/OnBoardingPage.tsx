@@ -1,5 +1,4 @@
 import React, {useRef} from 'react';
-import {useNavigation} from '@react-navigation/native';
 import {Dimensions, StyleSheet, View} from 'react-native';
 import Animated, {
   useAnimatedScrollHandler,
@@ -10,11 +9,16 @@ import features from './Features';
 import SlideImage from './SlideImage';
 import Dot from './Dot';
 import Slide from './Slide';
+import {StackNavigationProp} from '@react-navigation/stack/lib/typescript/src/types';
+import {OnBoardingStackParamList} from '../../navigation/types/OnBoardingStackParamList';
 
 const {width, height} = Dimensions.get('screen');
 
-const OnBoardingPage: React.FC = () => {
-  const navigation = useNavigation();
+type OnBoardingPageProps = {
+  navigation: StackNavigationProp<OnBoardingStackParamList, 'MainPage'>;
+};
+
+const OnBoardingPage: React.FC<OnBoardingPageProps> = ({navigation}) => {
   const scrollRef = useRef<Animated.ScrollView>(null);
   const scrollValue = useSharedValue<number>(0);
 
@@ -63,6 +67,7 @@ const OnBoardingPage: React.FC = () => {
           {features.map(({id, title, content}, index) => {
             const onPress = () => {
               if (scrollRef.current) {
+                // @ts-ignore
                 scrollRef.current?.scrollTo({
                   x: width * (index + 1),
                   animated: true,

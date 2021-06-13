@@ -1,5 +1,12 @@
 import React from 'react';
-import {Dimensions, Image, Platform, StyleSheet, View} from 'react-native';
+import {
+  Dimensions,
+  Image,
+  KeyboardAvoidingView,
+  Platform,
+  StyleSheet,
+  View,
+} from 'react-native';
 import {Button, Title, TextInput} from 'react-native-paper';
 import useStore from '../store/Store';
 import {Formik} from 'formik';
@@ -19,17 +26,18 @@ const LoginPage: React.FC = () => {
       deviceOperatingSystem: Platform.OS,
       deviceVersion:
         Platform.OS === 'ios'
-          ? Platform.osVersion
+          ? // @ts-ignore
+            Platform.osVersion
           : Platform.Version.toString(),
     },
   };
 
   return (
-    <View>
+    <KeyboardAvoidingView behavior={'position'}>
       <View>
         <Image
           source={require('../assets/onboarding/robo-deer.png')}
-          style={styles.roboDeer}
+          style={styles.robotDeer}
         />
       </View>
       <View style={styles.contentWrapper}>
@@ -80,14 +88,14 @@ const LoginPage: React.FC = () => {
           )}
         </Formik>
       </View>
-    </View>
+    </KeyboardAvoidingView>
   );
 };
 
 export default LoginPage;
 
 const styles = StyleSheet.create({
-  roboDeer: {
+  robotDeer: {
     width,
     height: height * 0.45,
   },

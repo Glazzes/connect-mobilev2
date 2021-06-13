@@ -3,10 +3,12 @@ import {createSharedElementStackNavigator} from 'react-navigation-shared-element
 import DefaultStackAppbar from './appbars/DefaultStackAppbar';
 import FriendRow from '../../chat-views/FriendRow';
 import {ChatStackParamList} from '../types/ChatStackParamList';
-import ChatRoomAppbar from '../../chat-views/chat-room/ChatroomAppbar';
-import FriendProfile from '../../chat-views/chat-user-profile/FriendProfile';
-import FriendProfileAppbar from '../../chat-views/chat-user-profile/FriendProfileAppbar';
-import ChatRoom from '../../chat-views/chat-room/Chatroom';
+import {
+  FriendProfileAppbar,
+  FriendProfile,
+  ChatRoomAppbar,
+  ChatRoom,
+} from '../../chat-views/index';
 
 const Stack = createSharedElementStackNavigator<ChatStackParamList>();
 

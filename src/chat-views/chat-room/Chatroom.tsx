@@ -8,14 +8,10 @@ import axios from 'axios';
 
 const AnimatedFlatList = Animated.createAnimatedComponent(FlatList);
 
-const VIEW_ABILITY_CONFIG = {
+const VIEWABILITY_CONFIG = {
   minimumViewTime: 300,
   itemVisiblePercentThreshold: 45,
   waitForInteraction: false,
-};
-
-type ChatroomProps = {
-  posts: Post[];
 };
 
 function renderItem({item}: {item: Post}) {
@@ -26,7 +22,7 @@ function keyExtractor(item: Post) {
   return item.title;
 }
 
-const ChatRoom: React.FC<ChatroomProps> = ({posts}) => {
+const ChatRoom: React.FC = () => {
   const [messages, setMessages] = useState<Post[]>([]);
 
   const onViewAbleItemsChange = useRef(
@@ -37,7 +33,7 @@ const ChatRoom: React.FC<ChatroomProps> = ({posts}) => {
 
   const animatedScrollHandler = useAnimatedScrollHandler({
     onScroll: event => {
-      console.log(event.contentOffset.y);
+      // console.log(event.contentOffset.y);
     },
   });
 
@@ -58,7 +54,7 @@ const ChatRoom: React.FC<ChatroomProps> = ({posts}) => {
         renderItem={renderItem}
         // @ts-ignore
         keyExtractor={keyExtractor}
-        viewabilityConfig={VIEW_ABILITY_CONFIG}
+        viewabilityConfig={VIEWABILITY_CONFIG}
         onViewableItemsChanged={onViewAbleItemsChange}
         showsVerticalScrollIndicator={false}
         removeClippedSubviews={true}

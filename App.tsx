@@ -27,7 +27,7 @@ const theme = {
 };
 
 const App: React.FC = () => {
-  const isAuthenticated = useStore(state => state.isAuthenticated);
+  const isAuthenticated: boolean = useStore(state => state.isAuthenticated);
 
   useEffect(() => {
     createConnectDatabase();

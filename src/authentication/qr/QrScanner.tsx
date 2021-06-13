@@ -12,7 +12,7 @@ import {QrCodeScanEvent} from '../../types/QrCodeScanEvent';
 import {ActivityIndicator, Appbar} from 'react-native-paper';
 import {QrStackParamList} from '../../navigation/types/QrStackParamList';
 
-const {width} = Dimensions.get('screen')
+const {width} = Dimensions.get('window');
 
 interface QrScannerProps {
   navigation: StackNavigationProp<QrStackParamList, 'Scanner'>;
@@ -24,7 +24,7 @@ const QrScanner: React.FC<QrScannerProps> = ({navigation}) => {
 
   const goBack = (): void => {
     navigation.goBack();
-  }
+  };
 
   const onQrCodeScanned = (result: BarCodeScanningResult): void => {
     try {
@@ -55,7 +55,7 @@ const QrScanner: React.FC<QrScannerProps> = ({navigation}) => {
         },
       );
     } catch (error) {
-      console.log(error);
+      navigation.navigate('BrowserNotFound');
     }
   };
 

@@ -2,14 +2,9 @@ import React from 'react';
 import {createStackNavigator} from '@react-navigation/stack';
 import OnBoardingPage from './main-page/OnBoardingPage';
 import LoginPage from './LoginPage';
+import {OnBoardingStackParamList} from '../navigation/types/OnBoardingStackParamList';
 
-type StackRouteList = {
-  MainPage: undefined;
-  Login: undefined;
-  NewAccount: undefined;
-};
-
-const Stack = createStackNavigator<StackRouteList>();
+const Stack = createStackNavigator<OnBoardingStackParamList>();
 
 const OnBoardingStackNavigator: React.FC = () => {
   return (

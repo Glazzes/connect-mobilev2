@@ -15,7 +15,7 @@ const useStore = create<ApplicationState>(set => ({
     nickname: '',
     profilePicture: '',
   },
-  isAuthenticated: true,
+  isAuthenticated: false,
   authenticate: () => set(state => set({...state, isAuthenticated: true})),
   setAuthenticatedUser: (authenticatedUser: User) =>
     set(state => set({...state, user: authenticatedUser})),
