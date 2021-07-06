@@ -1,10 +1,11 @@
 import React, {useEffect, useRef, useState} from 'react';
-import {View, ViewToken} from 'react-native';
+import {Text, View, ViewToken} from 'react-native';
 import {FlatList, StyleSheet} from 'react-native';
 import Animated, {useAnimatedScrollHandler} from 'react-native-reanimated';
 import UserTextMessage from '../../chat-messages/text-message/UserTextMessage';
-import {Post} from '../../types/Post';
+import {Post} from '../../shared/types/Post';
 import axios from 'axios';
+import ImageMessage from "../../chat-messages/image-message/ImageMessage";
 
 const AnimatedFlatList = Animated.createAnimatedComponent(FlatList);
 
@@ -48,18 +49,7 @@ const ChatRoom: React.FC = () => {
 
   return (
     <View style={styles.rootContainer}>
-      <AnimatedFlatList
-        data={messages}
-        // @ts-ignore
-        renderItem={renderItem}
-        // @ts-ignore
-        keyExtractor={keyExtractor}
-        viewabilityConfig={VIEWABILITY_CONFIG}
-        onViewableItemsChanged={onViewAbleItemsChange}
-        showsVerticalScrollIndicator={false}
-        removeClippedSubviews={true}
-        onScroll={animatedScrollHandler}
-      />
+      <ImageMessage />
     </View>
   );
 };

@@ -7,10 +7,11 @@ import {
   StyleSheet,
   View,
 } from 'react-native';
-import {Button, Title, TextInput} from 'react-native-paper';
-import useStore from '../store/Store';
+
 import {Formik} from 'formik';
-import {LoginRequest} from '../types/LoginRequest';
+import {LoginRequest} from '../shared/types';
+import useStore from '../shared/store/Store';
+import {Button, Title, TextInput} from 'react-native-paper';
 import AuthenticationService from '../services/Authentication.service';
 
 const {width, height} = Dimensions.get('screen');

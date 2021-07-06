@@ -1,6 +1,6 @@
 import React from 'react';
 import {createStackNavigator} from '@react-navigation/stack';
-import OnBoardingPage from './main-page/OnBoardingPage';
+import OnBoardingPage from './slider/OnBoardingPage';
 import LoginPage from './LoginPage';
 import {OnBoardingStackParamList} from '../navigation/types/OnBoardingStackParamList';
 

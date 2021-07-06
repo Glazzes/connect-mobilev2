@@ -1,5 +1,5 @@
 import create from 'zustand';
-import {User} from '../types/User';
+import {User} from '../types';
 
 type ApplicationState = {
   user: User;
@@ -15,7 +15,7 @@ const useStore = create<ApplicationState>(set => ({
     nickname: '',
     profilePicture: '',
   },
-  isAuthenticated: false,
+  isAuthenticated: true,
   authenticate: () => set(state => set({...state, isAuthenticated: true})),
   setAuthenticatedUser: (authenticatedUser: User) =>
     set(state => set({...state, user: authenticatedUser})),

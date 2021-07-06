@@ -1,4 +1,4 @@
-import {User} from '../../types/User';
+import {User} from '../../shared/types/User';
 
 export type ChatStackParamList = {
   Home: undefined;

@@ -1,9 +1,9 @@
 import React from 'react';
-import {createStackNavigator} from '@react-navigation/stack';
 import QrScanner from './QrScanner';
-import SuccessfulQrScan from './SuccessfulQrScan';
-import {QrStackParamList} from '../../navigation/types/QrStackParamList';
 import BrowserNotFound from './BrowserNotFound';
+import SuccessfulQrScan from './SuccessfulQrScan';
+import {createStackNavigator} from '@react-navigation/stack';
+import {QrStackParamList} from '../../navigation/types/QrStackParamList';
 
 const Stack = createStackNavigator<QrStackParamList>();
 

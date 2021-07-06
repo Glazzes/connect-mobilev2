@@ -1,9 +1,10 @@
 import React from 'react';
-import {createDrawerNavigator} from '@react-navigation/drawer';
+
 import DrawerContent from './DrawerContent';
-import MainStackNavigator from '../stack/MainStackNavigator';
-import QrStackNavigator from '../../authentication/qr/QrStackNavigator';
 import {DrawerParamList} from '../types/DrawerParamList';
+import MainStackNavigator from '../stack/MainStackNavigator';
+import {createDrawerNavigator} from '@react-navigation/drawer';
+import QrStackNavigator from '../../authentication/qr/QrStackNavigator';
 
 const Drawer = createDrawerNavigator<DrawerParamList>();
 

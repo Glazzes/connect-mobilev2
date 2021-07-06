@@ -7,7 +7,7 @@ import {
   StackNavigationProp,
 } from '@react-navigation/stack/lib/typescript/src/types';
 import {ChatStackParamList} from '../../navigation/types/ChatStackParamList';
-import {User} from '../../types/User';
+import {User} from '../../shared/types/User';
 import {RouteProp} from '@react-navigation/native';
 import {SharedElement} from 'react-navigation-shared-element';
 
@@ -29,9 +29,12 @@ const ChatRoomAppbar: React.FC<ChatroomAppbarProps> = ({navigation, scene}) => {
       <View style={styles.appbarContent}>
         <View style={styles.userInfo}>
           <TouchableWithoutFeedback onPress={goToFriendProfile}>
-            <SharedElement id={"sos"}>
-              <Avatar.Image source={{uri: friend.profilePicture}} size={40} />
-            </SharedElement>
+            <Avatar.Image
+              source={{
+                uri: 'https://randomuser.me/api/portraits/women/57.jpg',
+              }}
+              size={40}
+            />
           </TouchableWithoutFeedback>
           <View style={styles.infoContainer}>
             <Text style={styles.username}>{friend.username}</Text>

@@ -17,8 +17,7 @@ public class BasePackageList {
         new expo.modules.imagepicker.ImagePickerPackage(),
         new expo.modules.lineargradient.LinearGradientPackage(),
         new expo.modules.permissions.PermissionsPackage(),
-        new expo.modules.securestore.SecureStorePackage(),
-        new expo.modules.sqlite.SQLitePackage()
+        new expo.modules.securestore.SecureStorePackage()
     );
   }
 }

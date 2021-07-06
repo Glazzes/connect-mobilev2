@@ -1,14 +1,15 @@
 import React from 'react';
-import {createSharedElementStackNavigator} from 'react-navigation-shared-element';
-import DefaultStackAppbar from './appbars/DefaultStackAppbar';
-import FriendRow from '../../chat-views/FriendRow';
-import {ChatStackParamList} from '../types/ChatStackParamList';
 import {
   FriendProfileAppbar,
   FriendProfile,
   ChatRoomAppbar,
   ChatRoom,
-} from '../../chat-views/index';
+} from '../../chat-views';
+import FriendRow from '../../chat-views/FriendRow';
+import {TransitionPresets} from '@react-navigation/stack';
+import DefaultStackAppbar from './appbars/DefaultStackAppbar';
+import {ChatStackParamList} from '../types/ChatStackParamList';
+import {createSharedElementStackNavigator} from 'react-navigation-shared-element';
 
 const Stack = createSharedElementStackNavigator<ChatStackParamList>();
 
@@ -30,6 +31,9 @@ const MainStackNavigator: React.FC = _ => {
         name={'FriendChat'}
         component={ChatRoom}
         options={{
+          ...TransitionPresets.SlideFromRightIOS,
+          // @ts-ignore
+          swipeEnabled: false,
           header: ({navigation, scene}: {navigation: any; scene: any}) => (
             <ChatRoomAppbar navigation={navigation} scene={scene} />
           ),

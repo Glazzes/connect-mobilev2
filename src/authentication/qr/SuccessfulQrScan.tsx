@@ -1,10 +1,11 @@
 import React from 'react';
-import {Dimensions, Image, StyleSheet, View} from 'react-native';
+
 import {Button, Text} from 'react-native-paper';
 import {RouteProp} from '@react-navigation/native';
-import {StackNavigationProp} from '@react-navigation/stack/lib/typescript/src/types';
-import AuthenticationService from '../../services/Authentication.service';
+import {Dimensions, Image, StyleSheet, View} from 'react-native';
 import {QrStackParamList} from '../../navigation/types/QrStackParamList';
+import AuthenticationService from '../../services/Authentication.service';
+import {StackNavigationProp} from '@react-navigation/stack/lib/typescript/src/types';
 
 const {width, height} = Dimensions.get('screen');
 

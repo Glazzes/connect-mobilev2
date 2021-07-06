@@ -7,9 +7,9 @@ import {
 import {StyleSheet, View} from 'react-native';
 import FastImage from 'react-native-fast-image';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
-import useStore from '../../store/Store';
+import useStore from '../../shared/store/Store';
 import UserService from '../../services/User.service';
-import {User} from '../../types/User';
+import {User} from '../../shared/types';
 import {DrawerParamList} from '../types/DrawerParamList';
 
 interface DrawerContentProps {
@@ -19,13 +19,6 @@ interface DrawerContentProps {
 const DrawerContent: React.FC<DrawerContentProps> = ({navigation}) => {
   const theme = useTheme();
   const authenticatedUser: User = useStore(state => state.user);
-  const setAuthenticatedUser = useStore(state => state.setAuthenticatedUser);
-
-  useEffect(() => {
-    UserService.getAuthenticatedUser(setAuthenticatedUser, () =>
-      console.log('sos'),
-    );
-  }, []);
 
   return (
     <DrawerContentScrollView style={styles.drawerView}>

@@ -1,6 +1,7 @@
-import React, {useRef} from 'react';
+import React from 'react';
 import {Dimensions, StyleSheet, View} from 'react-native';
 import Animated, {
+  useAnimatedRef,
   useAnimatedScrollHandler,
   useAnimatedStyle,
   useSharedValue,
@@ -19,7 +20,7 @@ type OnBoardingPageProps = {
 };
 
 const OnBoardingPage: React.FC<OnBoardingPageProps> = ({navigation}) => {
-  const scrollRef = useRef<Animated.ScrollView>(null);
+  const scrollRef = useAnimatedRef<Animated.ScrollView>();
   const scrollValue = useSharedValue<number>(0);
 
   const scrollHandler = useAnimatedScrollHandler({
@@ -48,7 +49,7 @@ const OnBoardingPage: React.FC<OnBoardingPageProps> = ({navigation}) => {
           {features.map(({id, image}, index) => (
             <View>
               <SlideImage
-                key={id}
+                key={`image-${id}`}
                 currentScrollPosition={scrollValue}
                 route={image}
                 index={index}
@@ -59,7 +60,7 @@ const OnBoardingPage: React.FC<OnBoardingPageProps> = ({navigation}) => {
       </View>
       <View style={styles.dotSection}>
         {features.map(({id}, index) => (
-          <Dot key={id} animated={scrollValue} index={index} />
+          <Dot key={`dot-${id}`} animated={scrollValue} index={index} />
         ))}
       </View>
       <View style={{flex: 1}}>
@@ -79,7 +80,7 @@ const OnBoardingPage: React.FC<OnBoardingPageProps> = ({navigation}) => {
 
             return (
               <Slide
-                key={id}
+                key={`feature-${id}`}
                 navigation={navigation}
                 title={title}
                 content={content}

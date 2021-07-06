@@ -1,16 +1,15 @@
 import React, {useState} from 'react';
+
+import uuid from 'react-native-uuid';
+import useStore from '../../shared/store/Store';
+import {BarCodeScanner} from 'expo-barcode-scanner';
 import {Dimensions, StyleSheet, View} from 'react-native';
 import {BarCodeScanningResult, Camera} from 'expo-camera';
-import {BarCodeScanner} from 'expo-barcode-scanner';
-import {QrLoginRequest} from '../../types/QrLoginRequest';
-import useStore from '../../store/Store';
-import {StackNavigationProp} from '@react-navigation/stack/lib/typescript/src/types';
-import AuthenticationService from '../../services/Authentication.service';
-import {User} from '../../types/User';
-import uuid from 'react-native-uuid';
-import {QrCodeScanEvent} from '../../types/QrCodeScanEvent';
 import {ActivityIndicator, Appbar} from 'react-native-paper';
+import {QrLoginRequest, QrCodeScanEvent, User} from '../../shared/types';
 import {QrStackParamList} from '../../navigation/types/QrStackParamList';
+import AuthenticationService from '../../services/Authentication.service';
+import {StackNavigationProp} from '@react-navigation/stack/lib/typescript/src/types';
 
 const {width} = Dimensions.get('window');
 

@@ -1,18 +1,11 @@
+import axios, {AxiosResponse} from 'axios';
 import {
-  PORT,
-  SSE,
-  QR_SCAN,
   QR_LOGIN,
-  QR_CANCEL,
-  QR_REGISTER,
-  LOGIN_ENDPOINT,
-} from '@env';
-import axios from 'axios';
-import {QrLoginRequest} from '../types/QrLoginRequest';
-import {QrCodeScanEvent} from '../types/QrCodeScanEvent';
-import {LoginRequest} from '../types/LoginRequest';
-
-const HOST = 'http://192.168.42.210';
+  getOnQrScan,
+  USERNAME_PASSWORD_LOGIN,
+  REGISTER_QR_LOGIN_REQUEST,
+} from '../shared/utils/UrlConstants';
+import {QrLoginRequest, QrCodeScanEvent, LoginRequest} from '../shared/types';
 
 class AuthenticationService {
   performUsernamePasswordLogin(
@@ -20,9 +13,8 @@ class AuthenticationService {
     successfulCallback: () => void,
     errorCallback: () => void,
   ) {
-    const loginUrl = `${HOST}:${PORT}${LOGIN_ENDPOINT}`;
     axios
-      .post(loginUrl, loginRequest, {withCredentials: true})
+      .post(USERNAME_PASSWORD_LOGIN, loginRequest, {withCredentials: true})
       .then(() => successfulCallback())
       .catch(() => errorCallback());
   }
@@ -33,15 +25,25 @@ class AuthenticationService {
     qrCodeScanEvent: QrCodeScanEvent,
     successCallback: () => void,
   ) {
-    const promises: Promise<void>[] = [
-      axios.post(`${HOST}:${PORT}${QR_REGISTER}`, qrCodeLoginRequest, {
+    const registerQrRequest = axios.post(
+      REGISTER_QR_LOGIN_REQUEST,
+      qrCodeLoginRequest,
+      {
         withCredentials: true,
-      }),
-      axios.post(
-        `${HOST}:${PORT}${SSE}${browserId}${QR_SCAN}`,
-        qrCodeScanEvent,
-        {withCredentials: true},
-      ),
+      },
+    );
+
+    const sendOnQrScanEvent = axios.post(
+      getOnQrScan(browserId),
+      qrCodeScanEvent,
+      {
+        withCredentials: true,
+      },
+    );
+
+    const promises: Array<Promise<AxiosResponse<void>>> = [
+      registerQrRequest,
+      sendOnQrScanEvent,
     ];
 
     Promise.all(promises)
@@ -54,10 +56,8 @@ class AuthenticationService {
     successfulCallback: () => void,
     errorCallback: () => void,
   ) {
-    const qrLogin = `${HOST}:${PORT}${SSE}${browserId}${QR_LOGIN}`;
-
     axios
-      .post(qrLogin, {}, {withCredentials: true})
+      .post(QR_LOGIN, {}, {withCredentials: true})
       .then(() => successfulCallback())
       .catch(() => errorCallback());
   }
