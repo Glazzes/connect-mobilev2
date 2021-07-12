@@ -2,6 +2,9 @@
 #
 .DS_Store
 
+# others
+src/assets
+
 # Xcode
 #
 build/

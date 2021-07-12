@@ -5,20 +5,20 @@ import {
   Scene,
   StackNavigationProp,
 } from '@react-navigation/stack/lib/typescript/src/types';
-import {ChatStackParamList} from '../../types/ChatStackParamList';
+import {StackScreenParams} from '../types/StackScreenParams';
 import {DrawerNavigationProp} from '@react-navigation/drawer';
-import {DrawerParamList} from '../../types/DrawerParamList';
+import {DrawerScreenParams} from '../types/DrawerScreenParams';
 import {StyleSheet} from 'react-native';
 
 type DefaultStackAppbarProps = {
   navigation: CompositeNavigationProp<
-    StackNavigationProp<ChatStackParamList, 'Home'>,
-    DrawerNavigationProp<DrawerParamList>
+    StackNavigationProp<StackScreenParams, 'Home'>,
+    DrawerNavigationProp<DrawerScreenParams>
   >;
-  scene: Scene<RouteProp<ChatStackParamList, 'Home'>>;
+  scene: Scene<RouteProp<StackScreenParams, 'Home'>>;
 };
 
-const DefaultStackAppbar: React.FC<DefaultStackAppbarProps> = ({
+const StackNavigatorAppbar: React.FC<DefaultStackAppbarProps> = ({
   navigation,
   scene,
 }) => {
@@ -33,7 +33,7 @@ const DefaultStackAppbar: React.FC<DefaultStackAppbarProps> = ({
   );
 };
 
-export default DefaultStackAppbar;
+export default StackNavigatorAppbar;
 
 const styles = StyleSheet.create({
   appbar: {backgroundColor: '#202329', elevation: 0},

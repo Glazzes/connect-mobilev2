@@ -13,6 +13,10 @@ export function getOnQrScan(id: string): string {
   return `${BASE_URL}/auth/sse/${id}/qr-scan`;
 }
 
+export function getOnQrLogin(id: string): string {
+  return `${BASE_URL}/auth/sse/${id}/qr-login`;
+}
+
 // authentication endpoints
 export const USERNAME_PASSWORD_LOGIN = `${BASE_URL}/auth/login`;
 export const QR_LOGIN = `${BASE_URL}/auth/qr/login`;

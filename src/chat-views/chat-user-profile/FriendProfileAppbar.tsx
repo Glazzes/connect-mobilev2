@@ -2,12 +2,12 @@ import React from 'react';
 import {Appbar} from 'react-native-paper';
 import {Dimensions, StyleSheet, useWindowDimensions} from 'react-native';
 import {StackNavigationProp} from '@react-navigation/stack/lib/typescript/src/types';
-import {ChatStackParamList} from '../../navigation/types/ChatStackParamList';
+import {StackScreenParams} from '../../navigation/types/StackScreenParams';
 
 const {width, height} = Dimensions.get('window')
 
 type FriendProfileAppbarProps = {
-  navigation: StackNavigationProp<ChatStackParamList, 'FriendProfile'>;
+  navigation: StackNavigationProp<StackScreenParams, 'FriendProfile'>;
 };
 
 const FriendProfileAppbar: React.FC<FriendProfileAppbarProps> = ({

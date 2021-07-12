@@ -7,15 +7,15 @@ import {Dimensions, StyleSheet, View} from 'react-native';
 import {BarCodeScanningResult, Camera} from 'expo-camera';
 import {ActivityIndicator, Appbar} from 'react-native-paper';
 import {QrLoginRequest, QrCodeScanEvent, User} from '../../shared/types';
-import {QrStackParamList} from '../../navigation/types/QrStackParamList';
 import AuthenticationService from '../../services/Authentication.service';
 import {StackNavigationProp} from '@react-navigation/stack/lib/typescript/src/types';
-
-const {width} = Dimensions.get('window');
+import { StackScreenParams } from '../../navigation/types/StackScreenParams';
 
 interface QrScannerProps {
-  navigation: StackNavigationProp<QrStackParamList, 'Scanner'>;
+  navigation: StackNavigationProp<StackScreenParams, 'Scanner'>;
 }
+
+const {width} = Dimensions.get('window');
 
 const QrScanner: React.FC<QrScannerProps> = ({navigation}) => {
   const [processingScan, setProcessingScan] = useState<boolean>(false);

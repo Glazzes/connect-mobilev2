@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react';
+import React from 'react';
 import {Caption, Drawer, Subheading, useTheme} from 'react-native-paper';
 import {
   DrawerContentScrollView,
@@ -10,10 +10,10 @@ import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import useStore from '../../shared/store/Store';
 import UserService from '../../services/User.service';
 import {User} from '../../shared/types';
-import {DrawerParamList} from '../types/DrawerParamList';
+import {DrawerScreenParams} from '../types/DrawerScreenParams';
 
 interface DrawerContentProps {
-  navigation: DrawerNavigationProp<DrawerParamList>;
+  navigation: DrawerNavigationProp<DrawerScreenParams>;
 }
 
 const DrawerContent: React.FC<DrawerContentProps> = ({navigation}) => {
@@ -47,7 +47,7 @@ const DrawerContent: React.FC<DrawerContentProps> = ({navigation}) => {
             )}
             label={'Messages'}
             onPress={() => {
-              navigation.navigate('Home');
+              navigation.navigate('Home', {screen: 'Home'})
             }}
           />
           <Drawer.Item
@@ -60,7 +60,7 @@ const DrawerContent: React.FC<DrawerContentProps> = ({navigation}) => {
             )}
             label={'Contacts'}
             onPress={() => {
-              navigation.navigate('Home');
+              navigation.navigate('Home', {screen: 'Home'})
             }}
           />
           <Drawer.Item
@@ -73,7 +73,7 @@ const DrawerContent: React.FC<DrawerContentProps> = ({navigation}) => {
             )}
             label={'Find friends'}
             onPress={() => {
-              navigation.navigate('Chat');
+              navigation.navigate('Home', {screen: 'Home'})
             }}
           />
         </Drawer.Section>
@@ -84,7 +84,7 @@ const DrawerContent: React.FC<DrawerContentProps> = ({navigation}) => {
             )}
             label={'Login with qr code'}
             onPress={() => {
-              navigation.navigate('QrAuth');
+              navigation.navigate('Home', {screen: 'Home'})
             }}
           />
           <Drawer.Item
@@ -97,7 +97,7 @@ const DrawerContent: React.FC<DrawerContentProps> = ({navigation}) => {
             )}
             label={'Devices'}
             onPress={() => {
-              navigation.navigate('Home');
+              navigation.navigate('Home', {screen: 'Home'})
             }}
           />
           <Drawer.Item
@@ -106,7 +106,7 @@ const DrawerContent: React.FC<DrawerContentProps> = ({navigation}) => {
             )}
             label={'Settings'}
             onPress={() => {
-              navigation.navigate('Home');
+              navigation.navigate('Home', {screen: 'Home'})
             }}
           />
           <Drawer.Item
@@ -115,7 +115,7 @@ const DrawerContent: React.FC<DrawerContentProps> = ({navigation}) => {
             )}
             label={'Log out'}
             onPress={() => {
-              navigation.navigate('Chat');
+              navigation.navigate('Home', {screen: 'Home'})
             }}
           />
         </Drawer.Section>

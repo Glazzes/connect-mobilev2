@@ -1,7 +1,7 @@
 import axios, {AxiosResponse} from 'axios';
 import {
-  QR_LOGIN,
   getOnQrScan,
+  getOnQrLogin,
   USERNAME_PASSWORD_LOGIN,
   REGISTER_QR_LOGIN_REQUEST,
 } from '../shared/utils/UrlConstants';
@@ -51,15 +51,9 @@ class AuthenticationService {
       .catch(() => console.log('not ok'));
   }
 
-  sendQrLoginSSE(
-    browserId: string,
-    successfulCallback: () => void,
-    errorCallback: () => void,
-  ) {
-    axios
-      .post(QR_LOGIN, {}, {withCredentials: true})
-      .then(() => successfulCallback())
-      .catch(() => errorCallback());
+  sendQrLoginSSE(browserId: string): Promise<void> {
+    const url = getOnQrLogin(browserId);
+    return axios.post(url, {}, {withCredentials: true})
   }
 }
 

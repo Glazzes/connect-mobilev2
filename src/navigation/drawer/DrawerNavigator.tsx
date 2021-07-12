@@ -1,12 +1,12 @@
 import React from 'react';
 
 import DrawerContent from './DrawerContent';
-import {DrawerParamList} from '../types/DrawerParamList';
+import {DrawerScreenParams} from '../types/DrawerScreenParams';
 import MainStackNavigator from '../stack/MainStackNavigator';
 import {createDrawerNavigator} from '@react-navigation/drawer';
 import QrStackNavigator from '../../authentication/qr/QrStackNavigator';
 
-const Drawer = createDrawerNavigator<DrawerParamList>();
+const Drawer = createDrawerNavigator<DrawerScreenParams>();
 
 const ApplicationDrawerNavigator = () => {
   return (
@@ -15,8 +15,7 @@ const ApplicationDrawerNavigator = () => {
       drawerContent={({navigation}: {navigation: any}) => (
         <DrawerContent navigation={navigation} />
       )}>
-      <Drawer.Screen name={'Home'} component={MainStackNavigator} />
-      <Drawer.Screen name={'QrAuth'} component={QrStackNavigator} />
+      <Drawer.Screen name={'Home'} component={MainStackNavigator}/>
     </Drawer.Navigator>
   );
 };

@@ -2,7 +2,7 @@ import React, {useState} from 'react';
 import {WS_ENDPOINT} from '../shared/utils/UrlConstants';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import {Avatar, Subheading, Caption, Badge} from 'react-native-paper';
-import {ChatStackParamList} from '../navigation/types/ChatStackParamList';
+import {StackScreenParams} from '../navigation/types/StackScreenParams';
 import {StyleSheet, View, Text, TouchableWithoutFeedback} from 'react-native';
 import {StackNavigationProp} from '@react-navigation/stack/lib/typescript/src/types';
 
@@ -11,7 +11,7 @@ import SockJsClient from 'react-stomp';
 import {User} from '../shared/types';
 
 interface FriendRowProps {
-  navigation: StackNavigationProp<ChatStackParamList, 'Home'>;
+  navigation: StackNavigationProp<StackScreenParams, 'Home'>;
   friend?: User;
 }
 
@@ -19,7 +19,7 @@ const FriendRow: React.FC<FriendRowProps> = ({navigation}) => {
   const [clientRef, setClientRef] = useState(null);
 
   const goToChatroom = () => {
-    navigation.navigate('FriendChat', {
+    navigation.navigate('Chatroom', {
       friend: {
         id: 'some cool id',
         username: 'Glaze',

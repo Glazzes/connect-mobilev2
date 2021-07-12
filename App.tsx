@@ -30,7 +30,7 @@ const App: React.FC = () => {
 
   useEffect(() => {
     UserRepository.insertNewUSer({
-      id: 'some random id',
+      id: 'some random other random',
       username: 'Glaze',
       nickname: 'Glaze',
       profilePicture: 'some profile pic',

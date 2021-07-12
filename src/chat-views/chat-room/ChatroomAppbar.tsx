@@ -2,30 +2,30 @@ import React from 'react';
 import {Appbar, Avatar} from 'react-native-paper';
 import {StyleSheet, Text, TouchableWithoutFeedback, View} from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
-import {
-  Scene,
-  StackNavigationProp,
-} from '@react-navigation/stack/lib/typescript/src/types';
-import {ChatStackParamList} from '../../navigation/types/ChatStackParamList';
+import {Scene, StackNavigationProp} from '@react-navigation/stack/lib/typescript/src/types';
+import {StackScreenParams} from '../../navigation/types/StackScreenParams';
 import {User} from '../../shared/types/User';
-import {RouteProp} from '@react-navigation/native';
-import {SharedElement} from 'react-navigation-shared-element';
+import { RouteProp } from '@react-navigation/native';
 
 type ChatroomAppbarProps = {
-  navigation: StackNavigationProp<ChatStackParamList, 'FriendChat'>;
-  scene: Scene<RouteProp<ChatStackParamList, 'FriendChat'>>;
+  navigation: StackNavigationProp<StackScreenParams>;
+  scene: Scene<RouteProp<StackScreenParams, 'Chatroom'>>;
 };
 
 const ChatRoomAppbar: React.FC<ChatroomAppbarProps> = ({navigation, scene}) => {
   const friend: User = scene.route.params.friend;
 
   const goToFriendProfile = () => {
-    navigation.navigate('FriendProfile', {friend: friend});
+    navigation.navigate('FriendProfile', {friend: friend})
   };
+
+  const goBack = () => {
+   navigation.goBack()
+  }
 
   return (
     <Appbar.Header style={styles.appbar}>
-      <Appbar.BackAction onPress={() => navigation.navigate('Home')} />
+      <Appbar.BackAction onPress={goBack} />
       <View style={styles.appbarContent}>
         <View style={styles.userInfo}>
           <TouchableWithoutFeedback onPress={goToFriendProfile}>

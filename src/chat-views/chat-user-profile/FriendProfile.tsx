@@ -1,94 +1,97 @@
 import React from 'react';
-import {Dimensions, StyleSheet, View} from 'react-native';
-import {RouteProp} from '@react-navigation/native';
+import {Dimensions, Image, StyleSheet, View} from 'react-native';
+import {CompositeNavigationProp, RouteProp} from '@react-navigation/native';
 import Animated, {
-  interpolateColor,
+  Easing,
   useAnimatedGestureHandler,
-  useAnimatedScrollHandler,
   useAnimatedStyle,
   useSharedValue,
   withTiming,
 } from 'react-native-reanimated';
-import {ChatStackParamList} from '../../navigation/types/ChatStackParamList';
+import {StackScreenParams} from '../../navigation/types/StackScreenParams';
 import {StackNavigationProp} from '@react-navigation/stack/lib/typescript/src/types';
 import {Appbar} from 'react-native-paper';
 import {
   PanGestureHandler,
   PanGestureHandlerGestureEvent,
 } from 'react-native-gesture-handler';
-
-const {width, height} = Dimensions.get('screen');
+import ProfilePicture from './ProfilePicture';
+import { DrawerNavigationProp } from '@react-navigation/drawer';
+import { DrawerScreenParams } from '../../navigation/types/DrawerScreenParams';
 
 type FriendProfileProps = {
-  navigation: StackNavigationProp<ChatStackParamList, 'FriendProfile'>;
-  route: RouteProp<ChatStackParamList, 'FriendProfile'>;
+  navigation: CompositeNavigationProp<
+    StackNavigationProp<StackScreenParams, 'FriendProfile'>,
+    DrawerNavigationProp<DrawerScreenParams>
+  >;
+  route: RouteProp<StackScreenParams, 'FriendProfile'>;
 };
+
+const {width, height} = Dimensions.get('window');
+const IMAGE_HEIGHT = 300;
+const ANIMATION_CONFIG  = {
+  duration: 200,
+  easing: Easing.inOut(Easing.ease)
+}
 
 const FriendProfile: React.FC<FriendProfileProps> = ({navigation, route}) => {
   const user = route.params.friend;
 
-  // styles
-  const pictureBorderRadius = useSharedValue<number>(0);
-  const pictureImageHeight = useSharedValue<number>(height / 2);
-  const pictureImageWidth = useSharedValue<number>(width);
+  const translateY = useSharedValue<number>(0);
+  const tyHeight = useSharedValue<number>(0);
+  const isAtTop = useSharedValue<boolean>(true);
 
-  const appBarBgColor = useSharedValue<number>(0);
-
-  const animatedAppbarStyles = useAnimatedStyle(() => {
-    return {
-      backgroundColor: interpolateColor(
-        appBarBgColor.value,
-        [180, 250],
-        ['transparent', '#202329'],
-        'RGB',
-      ),
-    };
-  });
-
-  const animatedPictureStyles = useAnimatedStyle(() => {
-    return {
-      width: pictureImageWidth.value,
-      height: pictureImageHeight.value,
-      borderRadius: pictureBorderRadius.value,
-    };
-  });
-
-  const scrollHanlder = useAnimatedScrollHandler({
-    onScroll: event => {
-      appBarBgColor.value = event.contentOffset.y;
+  const panGestureHandler = useAnimatedGestureHandler<
+    PanGestureHandlerGestureEvent, {y: number}
+  >({
+    onStart: (_, ctx) => {
+      ctx.y = translateY.value
     },
+    onActive: (e, ctx) => {
+      const newValue = ctx.y + e.translationY
+      
+      if(newValue <= 0 && newValue >= -IMAGE_HEIGHT){
+        translateY.value = newValue
+      }
 
-  });
+      if(translateY.value >= -5 && translateY.value <= 5){
+        isAtTop.value = true
+      }else{
+        isAtTop.value = false
+      }
 
-  const goBack = () => {
-    navigation.goBack();
-  };
+      if(translateY.value >= -5 && isAtTop.value){
+        tyHeight.value = e.translationY
+      }
+    },
+    onEnd: _ => {
+      tyHeight.value = withTiming(0, ANIMATION_CONFIG);
+    }
+  })
 
+  const animatedStyles = useAnimatedStyle(() => {
+    return {
+      transform: [{translateY: translateY.value}]
+    }
+  })
+  
   return (
-    <View>
-      <Animated.View style={[styles.appbarContainer, animatedAppbarStyles]}>
-        <Appbar.Header style={styles.appbar}>
-          <Appbar.BackAction color={'white'} onPress={goBack} />
-        </Appbar.Header>
+    <PanGestureHandler onGestureEvent={panGestureHandler}>
+      <Animated.View style={[animatedStyles]}>
+        <ProfilePicture tyHeight={tyHeight} picture={user.profilePicture} />
+        <View style={styles.testingContainer} />
       </Animated.View>
-      <Animated.ScrollView
-        showsVerticalScrollIndicator={false}
-        onScroll={scrollHanlder}>
-        <Animated.View>
-          <Animated.Image
-            source={{uri: user.profilePicture}}
-            style={animatedPictureStyles}
-          />
-          <View style={styles.testingContainer} />
-        </Animated.View>
-      </Animated.ScrollView>
-    </View>
+    </PanGestureHandler>  
   );
 };
 
 export default FriendProfile;
 
 const styles = StyleSheet.create({
+  image: {
+    width,
+    height: 300
+  },
   appbarContainer: {
     position: 'absolute',
     zIndex: 100,
@@ -100,7 +103,7 @@ const styles = StyleSheet.create({
   },
   testingContainer: {
     width,
-    height,
+    height: height * 2,
     backgroundColor: '#202329',
   },
 });
