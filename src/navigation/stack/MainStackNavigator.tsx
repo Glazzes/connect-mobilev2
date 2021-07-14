@@ -19,16 +19,17 @@ const Stack = createSharedElementStackNavigator<StackScreenParams>();
 const MainStackNavigator: React.FC = _ => {
   return (
     <Stack.Navigator
+      mode={'modal'}
       headerMode={'screen'}
       screenOptions={{
         gestureEnabled: false,
-        header: ({navigation, scene}: {navigation: any; scene: any}) => (
-          <StackNavigatorAppbar navigation={navigation} scene={scene} />
-        ),
         cardStyle: {
           backgroundColor: 'white',
         },
-        cardOverlayEnabled: true
+        cardOverlayEnabled: true,
+        header: ({navigation, scene}: {navigation: any; scene: any}) => (
+          <StackNavigatorAppbar navigation={navigation} scene={scene} />
+        ),
       }}>
       <Stack.Screen name={'Home'} component={ImageMessage} />
 

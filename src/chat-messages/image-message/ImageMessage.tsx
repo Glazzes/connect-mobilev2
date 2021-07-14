@@ -5,6 +5,7 @@ import { SharedElement } from 'react-navigation-shared-element';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { StackScreenParams } from '../../navigation/types/StackScreenParams';
 import { TouchableWithoutFeedback } from 'react-native-gesture-handler';
+import { useFocusEffect } from '@react-navigation/native';
 
 const image = require('../../assets/pics/one.jpg');
 const imageDimensions = {width: 821, height: 1280};
@@ -16,6 +17,7 @@ type ImageMessageProps = {
 
 const ImageMessage: React.FC<ImageMessageProps> = ({navigation}) => {
   const [dimension, setDimensions] = useState({width: 1, height: 1});
+  const [opacity, setOpacity] = useState<0 | 1>(0);
 
   const onImageDownload = (event: OnProgressEvent) => {
     console.log(
@@ -23,10 +25,19 @@ const ImageMessage: React.FC<ImageMessageProps> = ({navigation}) => {
     );
   };
 
-  const goToFullScreen = () => navigation.navigate('FullScreenImageMessage', {id: 'one'});
+  const goToFullScreen = () => {
+    navigation.navigate('FullScreenImageMessage', {id: 'one'});
+    setOpacity(0);
+  }
+
+  useFocusEffect(() => {
+    if(navigation.isFocused()){
+      setOpacity(1);
+    }
+  })
 
   return (
-    <View style={styles.container}>
+    <View style={[styles.container, {opacity}]}>
       <TouchableWithoutFeedback
         style={styles.image}
         onPress={goToFullScreen}

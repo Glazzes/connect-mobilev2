@@ -5,18 +5,12 @@ import Animated, { useAnimatedRef, useAnimatedScrollHandler, useAnimatedStyle, u
 import UserTextMessage from '../../chat-messages/text-message/UserTextMessage';
 import { Post } from '../../shared/types/Post';
 import axios from 'axios';
-import { CompositeNavigationProp } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { StackScreenParams } from '../../navigation/types/StackScreenParams';
-import { DrawerNavigationProp } from '@react-navigation/drawer';
-import { DrawerScreenParams } from '../../navigation/types/DrawerScreenParams';
 import ScrollToEndFAB from './ScrollToEndFAB';
 
 type ChatRoomProps = {
-  navigation: CompositeNavigationProp<
-    StackNavigationProp<StackScreenParams, 'Chatroom'>,
-    DrawerNavigationProp<DrawerScreenParams>
-  >;
+  navigation: StackNavigationProp<StackScreenParams, 'Chatroom'>;
 }
 
 const { width } = Dimensions.get('window');
