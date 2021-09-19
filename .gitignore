@@ -3,7 +3,8 @@
 .DS_Store
 
 # others
-src/assets/pics
+docs
+src/assets
 
 # Xcode
 #
