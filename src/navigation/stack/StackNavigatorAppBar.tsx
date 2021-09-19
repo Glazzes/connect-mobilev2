@@ -5,9 +5,9 @@ import {
   Scene,
   StackNavigationProp,
 } from '@react-navigation/stack/lib/typescript/src/types';
-import {StackScreenParams} from '../types/StackScreenParams';
+import {StackScreenParams} from './StackScreenParams';
 import {DrawerNavigationProp} from '@react-navigation/drawer';
-import {DrawerScreenParams} from '../types/DrawerScreenParams';
+import {DrawerScreenParams} from '../drawer/DrawerScreenParams';
 import {StyleSheet} from 'react-native';
 
 type DefaultStackAppbarProps = {

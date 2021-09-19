@@ -1,5 +1,5 @@
 import React from 'react';
-import {View} from 'react-native';
+import {StyleSheet, View} from 'react-native';
 import {Autolink} from 'react-native-autolink';
 import {Caption} from 'react-native-paper';
 
@@ -22,7 +22,7 @@ const UserTextMessage: React.FC<UserTextMessageProps> = ({message}) => {
 
 export default React.memo(UserTextMessage);
 
-const styles = {
+const styles = StyleSheet.create({
   container: {
     alignItems: 'center',
     paddingRight: 10,
@@ -42,4 +42,4 @@ const styles = {
   },
   text: {color: 'white'},
   link: {},
-};
+})

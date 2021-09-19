@@ -1,131 +1,170 @@
-import React, { useRef } from 'react'
-import { Dimensions, StyleSheet, Image } from 'react-native'
-import { StackNavigationProp } from '@react-navigation/stack';
-import { PanGestureHandler, PinchGestureHandler, PinchGestureHandlerGestureEvent } from 'react-native-gesture-handler';
-import Animated, { Extrapolate, interpolate, runOnJS, useAnimatedGestureHandler, useAnimatedStyle, useSharedValue, withSpring, withTiming } from 'react-native-reanimated';
-import { SharedElement } from 'react-navigation-shared-element';
-import { StackScreenParams } from '../../navigation/types/StackScreenParams';
-import {snapPoint, useVector} from 'react-native-redash';
-import { RouteProp } from '@react-navigation/native';
-import { withTimingAnimationConfig } from '../../shared/utils/AnimationConfig';
+import React, {useState} from 'react';
+import {Dimensions, StyleSheet, Image} from 'react-native';
+import {StackNavigationProp} from '@react-navigation/stack';
+import {
+  PanGestureHandler,
+  PanGestureHandlerGestureEvent,
+  PinchGestureHandler,
+  PinchGestureHandlerGestureEvent,
+  TapGestureHandler,
+  TapGestureHandlerGestureEvent,
+} from 'react-native-gesture-handler';
+import Animated, {
+  useAnimatedGestureHandler,
+  useAnimatedStyle,
+  useSharedValue,
+  withDecay,
+  withTiming,
+} from 'react-native-reanimated';
+import {SharedElement} from 'react-navigation-shared-element';
+import FullImage from 'react-native-image-zoom-viewer';
+import {StackScreenParams} from '../../navigation/stack/StackScreenParams';
+import {useVector} from 'react-native-redash';
+import {RouteProp} from '@react-navigation/native';
 
 type FullScreenImageMessageProps = {
-    navigation: StackNavigationProp<StackScreenParams, 'FullScreenImageMessage'>;
-    route: RouteProp<StackScreenParams, 'FullScreenImageMessage'>;
-}
+  navigation: StackNavigationProp<StackScreenParams, 'FullScreenImageMessage'>;
+  route: RouteProp<StackScreenParams, 'FullScreenImageMessage'>;
+};
 
 const image = require('../../assets/pics/one.jpg');
 const imageDimensions = {width: 821, height: 1280};
 const {width, height} = Dimensions.get('window');
 
-const FullScreenImageMessage: React.FC<FullScreenImageMessageProps> = ({route, navigation}) => {
-  const panRef = useRef<PanGestureHandler>();
-  const pinchRef = useRef<PinchGestureHandler>();
+const FullScreenImageMessage: React.FC<FullScreenImageMessageProps> = ({
+  route,
+  navigation,
+}) => {
+  const [imageHeight, setImageHeight] = useState<number>(0);
 
   const translate = useVector(0, 0);
-  const isGestureActive = useSharedValue<boolean>(false);
+  const pinchScale = useSharedValue<number>(1);
 
-  const onGestureEvent = useAnimatedGestureHandler({
-    onStart: _ => isGestureActive.value = true,  
-    onActive: e => {
-      translate.x.value = e.translationX;
-      translate.y.value = e.translationY;  
+  const panHandler = useAnimatedGestureHandler<
+    PanGestureHandlerGestureEvent,
+    {x: number; y: number}
+  >({
+    onStart: (_, ctx) => {
+      ctx.x = translate.x.value;
+      ctx.y = translate.y.value;
     },
-    onEnd: e => {
-      const destination = snapPoint(translate.y.value, e.velocityY, [0, height]);
-      if(destination === height){
-        runOnJS(navigation.goBack)()
-      }else{
-        translate.x.value = withSpring(0, {velocity: e.velocityX});
-        translate.y.value = withSpring(0, {velocity: e.velocityY}); 
+    onActive: ({translationX, translationY}, ctx) => {
+      const X_BOUNDARY = width / 4;
+      const Y_BOUNDARY = imageHeight / 4;
+
+      const currentX = ctx.x + translationX;
+      const currentY = ctx.y + translationY;
+
+      if (currentX >= -X_BOUNDARY && currentX <= X_BOUNDARY) {
+        translate.x.value = currentX;
       }
 
-      isGestureActive.value = false
-    }  
-  })  
+      if (currentY >= -Y_BOUNDARY && currentY <= Y_BOUNDARY) {
+        translate.y.value = currentY;
+      }
+    },
+    onEnd: ({velocityX, velocityY}) => {
+      const X_BOUNDARY = (width * pinchScale.value - width) / 4;
+      const Y_BOUNDARY = (height * pinchScale.value - height) / 4;
 
-  const style = useAnimatedStyle(() => {
-    const scale = interpolate(
-      translate.y.value,
-      [0, height],
-      [1, 0.3],
-      Extrapolate.CLAMP  
-    )
+      translate.x.value = withDecay({
+        velocity: velocityX,
+        clamp: [-X_BOUNDARY, X_BOUNDARY],
+      });
+      translate.y.value = withDecay({
+        velocity: velocityY,
+        clamp: [-Y_BOUNDARY, Y_BOUNDARY],
+      });
+    },
+  });
 
+  const pinchHandler = useAnimatedGestureHandler<
+    PinchGestureHandlerGestureEvent,
+    {scale: number}
+  >({
+    onStart: (_, ctx) => {
+      ctx.scale = pinchScale.value;
+    },
+    onActive: ({scale, focalX, focalY}, ctx) => {
+      translate.x.value = -1 * (focalX - width / 2) * (scale - 1);
+      translate.y.value = -1 * (focalY - imageHeight / 2) * (scale - 1);
+      pinchScale.value = ctx.scale + (scale - 1);
+    },
+    onEnd: _ => {
+      if (pinchScale.value < 1) {
+        pinchScale.value = withTiming(1, {duration: 300});
+      }
+    },
+  });
+
+  const tapHandler = useAnimatedGestureHandler<TapGestureHandlerGestureEvent>({
+    onActive: ({x, y}) => {
+      if (pinchScale.value >= 1) {
+        translate.x.value = withTiming(0, {duration: 300});
+        translate.y.value = withTiming(0, {duration: 300});
+        pinchScale.value = withTiming(1, {duration: 300});
+      }
+
+      if (pinchScale.value === 1) {
+        let tx = -1 * (x - width / 2);
+        let ty = -1 * (y - height / 2);
+
+        console.log(tx, ty);
+
+        if (tx > 100) {
+          tx = 80;
+        }
+        if (tx <= -100) {
+          tx = -80;
+        }
+
+        translate.x.value = withTiming(tx, {duration: 300});
+        translate.y.value = withTiming(ty, {duration: 300});
+        pinchScale.value = withTiming(2, {duration: 300});
+      }
+    },
+  });
+
+  const pinchStyles = useAnimatedStyle(() => {
     return {
       transform: [
         {translateX: translate.x.value},
         {translateY: translate.y.value},
-        {scale}
-      ]  
-    }  
+        {scale: pinchScale.value},
+      ],
+    };
   });
 
-  const gestureScale = useSharedValue<number>(1)
-  const t = useVector(0, 0)
-
-  const pinchHandler = useAnimatedGestureHandler<
-    PinchGestureHandlerGestureEvent,
-    {originX: number, originY: number, scale: number}
-  >({
-    onStart: (e, ctx) => {
-      ctx.scale = gestureScale.value;
-    },
-    onActive: ({scale, focalX, focalY}, ctx) => {
-      gestureScale.value = ctx.scale + (scale - 1);
-      console.log(`x ${focalX}, y: ${focalY}, scale ${scale}`)
-    }
-  })
-
-  const imageStyle = useAnimatedStyle(() => {
-    const radius = isGestureActive.value
-      ? withTiming(15, withTimingAnimationConfig)
-      : withTiming(0, withTimingAnimationConfig);
-
-    return {
-      borderRadius: radius,
-      transform: [
-        {translateX: t.x.value},
-        {translateY: t.y.value},
-        {scale: gestureScale.value}
-      ]
-    }  
-  })
-
-  return(
-    <PinchGestureHandler 
-      onGestureEvent={pinchHandler}
-      ref={pinchRef}
-      simultaneousHandlers={panRef}
-      enabled={true}
-      >
-      <Animated.View style={[styles.container, style]}>
-        <PanGestureHandler 
-          onGestureEvent={onGestureEvent}
-          ref={panRef}
-          simultaneousHandlers={pinchRef}  
-          
-        >
-          <Animated.View style={[styles.image, imageStyle]}>
-            <SharedElement id={route.params.id}>
-              <Image source={image} style={styles.image} onLayout={(e => {
-                console.log(e.nativeEvent.layout.height)
-              })} />    
-            </SharedElement>
+  return (
+    <PinchGestureHandler onGestureEvent={pinchHandler}>
+      <Animated.View style={styles.container}>
+        <PanGestureHandler onGestureEvent={panHandler} maxPointers={1}>
+          <Animated.View>
+            <TapGestureHandler numberOfTaps={2} onGestureEvent={tapHandler}>
+              <Animated.View style={[styles.image, pinchStyles]}>
+                <SharedElement id={`f-image-${route.params.id}`}>
+                  <Image
+                    source={image}
+                    style={styles.image}
+                    onLayout={e => setImageHeight(e.nativeEvent.layout.height)}
+                  />
+                </SharedElement>
+              </Animated.View>
+            </TapGestureHandler>
           </Animated.View>
         </PanGestureHandler>
-      </Animated.View>  
+      </Animated.View>
     </PinchGestureHandler>
-  )  
-}
+  );
+};
 
-export default FullScreenImageMessage
+export default FullScreenImageMessage;
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
     justifyContent: 'center',
-    alignItems: 'center'
+    alignItems: 'center',
   },
   image: {
     maxWidth: width,
@@ -133,5 +172,5 @@ const styles = StyleSheet.create({
     height: undefined,
     aspectRatio: imageDimensions.width / imageDimensions.height,
     overflow: 'hidden',
-  }  
-})
+  },
+});

@@ -1,19 +1,25 @@
-import React, { useRef, useState } from 'react';
-import { Dimensions, Text, View, ViewToken } from 'react-native';
-import { FlatList, StyleSheet } from 'react-native';
-import Animated, { useAnimatedRef, useAnimatedScrollHandler, useAnimatedStyle, useSharedValue, withTiming } from 'react-native-reanimated';
+import React, {useRef, useState} from 'react';
+import {Dimensions, View, ViewToken} from 'react-native';
+import {FlatList, StyleSheet} from 'react-native';
+import Animated, {
+  useAnimatedRef,
+  useAnimatedScrollHandler,
+  useSharedValue,
+} from 'react-native-reanimated';
 import UserTextMessage from '../../chat-messages/text-message/UserTextMessage';
-import { Post } from '../../shared/types/Post';
-import axios from 'axios';
-import { StackNavigationProp } from '@react-navigation/stack';
-import { StackScreenParams } from '../../navigation/types/StackScreenParams';
+import {Post} from '../../shared/types/Post';
+import {StackNavigationProp} from '@react-navigation/stack';
+import {StackScreenParams} from '../../navigation/stack/StackScreenParams';
 import ScrollToEndFAB from './ScrollToEndFAB';
+import ChatRoomAppbar from './ChatroomAppbar';
+import {RouteProp} from '@react-navigation/native';
 
 type ChatRoomProps = {
   navigation: StackNavigationProp<StackScreenParams, 'Chatroom'>;
-}
+  route: RouteProp<StackScreenParams, 'Chatroom'>;
+};
 
-const { width } = Dimensions.get('window');
+const {width} = Dimensions.get('window');
 const AnimatedFlatList = Animated.createAnimatedComponent(FlatList);
 
 const VIEWABILITY_CONFIG = {
@@ -22,7 +28,7 @@ const VIEWABILITY_CONFIG = {
   waitForInteraction: false,
 };
 
-function renderItem({ item }: { item: Post }, index: number): React.ReactNode {
+function renderItem({item}: {item: Post}, index: number): React.ReactNode {
   return <UserTextMessage message={item.title} key={item.id} />;
 }
 
@@ -30,48 +36,45 @@ function keyExtractor(item: Post): string {
   return item.title;
 }
 
-const ChatRoom: React.FC<ChatRoomProps> = ({ navigation }) => {
+const ChatRoom: React.FC<ChatRoomProps> = ({navigation, route}) => {
   // component
   const [messages, setMessages] = useState<Post[]>([]);
 
   const onViewAbleItemsChange = useRef(
-    ({ changed }: { changed: Array<ViewToken> }) => {
+    ({changed}: {changed: Array<ViewToken>}) => {
       console.log(changed);
     },
   ).current;
 
-
-  // Animattion
+  // Animation
   const scrollRef = useAnimatedRef();
   const offsetY = useSharedValue<number>(0);
   const shouldDisplayFAB = useSharedValue<boolean>(true);
 
   const animatedScrollHandler = useAnimatedScrollHandler({
-    onScroll: (event) => {
+    onScroll: event => {
       if (event.contentOffset.y > offsetY.value && offsetY.value >= 0) {
-        shouldDisplayFAB.value = false
+        shouldDisplayFAB.value = false;
       } else {
-        shouldDisplayFAB.value = true
+        shouldDisplayFAB.value = true;
       }
 
-      offsetY.value = event.contentOffset.y
+      offsetY.value = event.contentOffset.y;
     },
   });
 
   return (
     <View style={styles.rootContainer}>
+      <ChatRoomAppbar friend={route.params.friend} navigation={navigation} />
       <AnimatedFlatList
-
         // @ts-ignore
         ref={scrollRef}
         data={[]}
         onViewableItemsChanged={onViewAbleItemsChange}
         viewabilityConfig={VIEWABILITY_CONFIG}
         onScroll={animatedScrollHandler}
-
         // @ts-ignore
         keyExtractor={keyExtractor}
-
         // @ts-ignore
         renderItem={renderItem}
         contentContainerStyle={styles.list}
@@ -93,6 +96,6 @@ const styles = StyleSheet.create({
   list: {
     width,
     height: 600,
-    backgroundColor: '#202329'
-  }
+    backgroundColor: '#202329',
+  },
 });

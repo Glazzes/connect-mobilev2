@@ -1,8 +1,8 @@
 import React, {useState} from 'react';
-import {WS_ENDPOINT} from '../shared/utils/UrlConstants';
+import {WEB_SOCKET_ENDPOINT} from '../shared/utils/UrlConstants';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import {Avatar, Subheading, Caption, Badge} from 'react-native-paper';
-import {StackScreenParams} from '../navigation/types/StackScreenParams';
+import {StackScreenParams} from '../navigation/stack/StackScreenParams';
 import {StyleSheet, View, Text, TouchableWithoutFeedback} from 'react-native';
 import {StackNavigationProp} from '@react-navigation/stack/lib/typescript/src/types';
 
@@ -23,7 +23,7 @@ const FriendRow: React.FC<FriendRowProps> = ({navigation}) => {
       friend: {
         id: 'some cool id',
         username: 'Glaze',
-        nickname: 'Epic glaze',
+        nickname: 'Glaze',
         profilePicture: 'https://randomuser.me/api/portraits/women/57.jpg',
       },
     });
@@ -41,7 +41,7 @@ const FriendRow: React.FC<FriendRowProps> = ({navigation}) => {
   return (
     <View>
       <SockJsClient
-        url={WS_ENDPOINT}
+        url={WEB_SOCKET_ENDPOINT}
         topics={['/chat/34']}
         onMessage={onMessage}
         onConnect={() => {

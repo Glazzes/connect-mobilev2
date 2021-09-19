@@ -1,5 +1,5 @@
 import React from 'react';
-import {View} from 'react-native';
+import {View, StyleSheet} from 'react-native';
 import FastImage from 'react-native-fast-image';
 import {Autolink} from 'react-native-autolink';
 import {Caption} from 'react-native-paper';
@@ -30,7 +30,7 @@ const FriendTextMessage: React.FC = () => {
 
 export default React.memo(FriendTextMessage);
 
-const styles = {
+const styles = StyleSheet.create({
   rootContainer: {
     padding: 10,
     flexDirection: 'row',
@@ -53,4 +53,4 @@ const styles = {
     borderTopLeftRadius: 5,
     borderBottomRightRadius: 5,
   },
-};
+})

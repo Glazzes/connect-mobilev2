@@ -1,0 +1,11 @@
+POST  http://localhost:8080/chat/30
+Content-Type: application/json
+
+"up"
+
+###
+
+POST  http://localhost:8080/chat/30
+Content-Type: application/json
+
+"down"

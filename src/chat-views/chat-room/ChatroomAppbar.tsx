@@ -1,27 +1,34 @@
 import React from 'react';
-import {Appbar, Avatar} from 'react-native-paper';
-import {StyleSheet, Text, TouchableWithoutFeedback, View} from 'react-native';
+import {Appbar} from 'react-native-paper';
+import {
+  StyleSheet,
+  Text,
+  TouchableWithoutFeedback,
+  View,
+  Image,
+} from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
-import {Scene, StackNavigationProp} from '@react-navigation/stack/lib/typescript/src/types';
-import {StackScreenParams} from '../../navigation/types/StackScreenParams';
-import {User} from '../../shared/types/User';
-import { RouteProp } from '@react-navigation/native';
+import {StackNavigationProp} from '@react-navigation/stack/lib/typescript/src/types';
+import {StackScreenParams} from '../../navigation/stack/StackScreenParams';
+import {User} from '../../shared/types';
+import {SharedElement} from 'react-navigation-shared-element';
 
 type ChatroomAppbarProps = {
-  navigation: StackNavigationProp<StackScreenParams>;
-  scene: Scene<RouteProp<StackScreenParams, 'Chatroom'>>;
+  navigation: StackNavigationProp<StackScreenParams, 'Chatroom'>;
+  friend: User;
 };
 
-const ChatRoomAppbar: React.FC<ChatroomAppbarProps> = ({navigation, scene}) => {
-  const friend: User = scene.route.params.friend;
-
+const ChatRoomAppbar: React.FC<ChatroomAppbarProps> = ({
+  friend,
+  navigation,
+}) => {
   const goToFriendProfile = () => {
-    navigation.navigate('FriendProfile', {friend: friend})
+    navigation.navigate('FriendProfile', {friend: friend});
   };
 
   const goBack = () => {
-   navigation.goBack()
-  }
+    navigation.goBack();
+  };
 
   return (
     <Appbar.Header style={styles.appbar}>
@@ -29,12 +36,14 @@ const ChatRoomAppbar: React.FC<ChatroomAppbarProps> = ({navigation, scene}) => {
       <View style={styles.appbarContent}>
         <View style={styles.userInfo}>
           <TouchableWithoutFeedback onPress={goToFriendProfile}>
-            <Avatar.Image
-              source={{
-                uri: 'https://randomuser.me/api/portraits/women/57.jpg',
-              }}
-              size={40}
-            />
+            <SharedElement id={`pfp-${friend.id}`}>
+              <Image
+                source={{
+                  uri: 'https://randomuser.me/api/portraits/women/57.jpg',
+                }}
+                style={styles.avatar}
+              />
+            </SharedElement>
           </TouchableWithoutFeedback>
           <View style={styles.infoContainer}>
             <Text style={styles.username}>{friend.username}</Text>
@@ -50,7 +59,7 @@ const ChatRoomAppbar: React.FC<ChatroomAppbarProps> = ({navigation, scene}) => {
 export default ChatRoomAppbar;
 
 const styles = StyleSheet.create({
-  appbar: {backgroundColor: '#202329', elevation: 0},
+  appbar: {backgroundColor: 'orange', elevation: 0},
   appbarContent: {
     flexGrow: 1,
     paddingLeft: 10,
@@ -65,6 +74,7 @@ const styles = StyleSheet.create({
   infoContainer: {
     paddingLeft: 10,
   },
+  avatar: {width: 40, height: 40, borderRadius: 20},
   username: {
     fontWeight: 'bold',
     color: '#f9f8fc',

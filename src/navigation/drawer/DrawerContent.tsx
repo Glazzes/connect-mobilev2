@@ -7,18 +7,21 @@ import {
 import {StyleSheet, View} from 'react-native';
 import FastImage from 'react-native-fast-image';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
-import useStore from '../../shared/store/Store';
-import UserService from '../../services/User.service';
-import {User} from '../../shared/types';
-import {DrawerScreenParams} from '../types/DrawerScreenParams';
+import {DrawerScreenParams} from './DrawerScreenParams';
+import {User} from '../../shared/persistence';
+import withObservables from '@nozbe/with-observables';
+import {Observable} from 'rxjs';
 
 interface DrawerContentProps {
   navigation: DrawerNavigationProp<DrawerScreenParams>;
+  authenticatedUser: User;
 }
 
-const DrawerContent: React.FC<DrawerContentProps> = ({navigation}) => {
+const DrawerContent: React.FC<DrawerContentProps> = ({
+  navigation,
+  authenticatedUser,
+}) => {
   const theme = useTheme();
-  const authenticatedUser: User = useStore(state => state.user);
 
   return (
     <DrawerContentScrollView style={styles.drawerView}>
@@ -47,7 +50,7 @@ const DrawerContent: React.FC<DrawerContentProps> = ({navigation}) => {
             )}
             label={'Messages'}
             onPress={() => {
-              navigation.navigate('Home', {screen: 'Home'})
+              navigation.navigate('Home', {screen: 'Home'});
             }}
           />
           <Drawer.Item
@@ -60,7 +63,7 @@ const DrawerContent: React.FC<DrawerContentProps> = ({navigation}) => {
             )}
             label={'Contacts'}
             onPress={() => {
-              navigation.navigate('Home', {screen: 'Home'})
+              navigation.navigate('Home', {screen: 'Home'});
             }}
           />
           <Drawer.Item
@@ -73,7 +76,7 @@ const DrawerContent: React.FC<DrawerContentProps> = ({navigation}) => {
             )}
             label={'Find friends'}
             onPress={() => {
-              navigation.navigate('Home', {screen: 'Home'})
+              navigation.navigate('Home', {screen: 'Home'});
             }}
           />
         </Drawer.Section>
@@ -84,7 +87,7 @@ const DrawerContent: React.FC<DrawerContentProps> = ({navigation}) => {
             )}
             label={'Login with qr code'}
             onPress={() => {
-              navigation.navigate('Home', {screen: 'Home'})
+              navigation.navigate('Home', {screen: 'QrWarning'});
             }}
           />
           <Drawer.Item
@@ -97,7 +100,7 @@ const DrawerContent: React.FC<DrawerContentProps> = ({navigation}) => {
             )}
             label={'Devices'}
             onPress={() => {
-              navigation.navigate('Home', {screen: 'Home'})
+              navigation.navigate('Home', {screen: 'Home'});
             }}
           />
           <Drawer.Item
@@ -106,7 +109,7 @@ const DrawerContent: React.FC<DrawerContentProps> = ({navigation}) => {
             )}
             label={'Settings'}
             onPress={() => {
-              navigation.navigate('Home', {screen: 'Home'})
+              navigation.navigate('Home', {screen: 'Home'});
             }}
           />
           <Drawer.Item
@@ -115,7 +118,7 @@ const DrawerContent: React.FC<DrawerContentProps> = ({navigation}) => {
             )}
             label={'Log out'}
             onPress={() => {
-              navigation.navigate('Home', {screen: 'Home'})
+              navigation.navigate('Home', {screen: 'Home'});
             }}
           />
         </Drawer.Section>
@@ -124,7 +127,16 @@ const DrawerContent: React.FC<DrawerContentProps> = ({navigation}) => {
   );
 };
 
-export default DrawerContent;
+type ObservableProps = {authenticatedUser: Observable<User>};
+
+const enhance = withObservables<DrawerContentProps, ObservableProps>(
+  ['authenticatedUser'],
+  ({authenticatedUser}) => ({
+    authenticatedUser: authenticatedUser.observe(),
+  }),
+);
+
+export default enhance(DrawerContent);
 
 const styles = StyleSheet.create({
   drawerView: {margin: 0, padding: 0, backgroundColor: '#202329'},
